@@ -1,0 +1,54 @@
+{
+	"info": {
+		"_postman_id": "da97d939-7c97-45dd-b256-662a8e95ebde",
+		"name": "Newman",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12610351"
+	},
+	"item": [
+		{
+			"name": "Github repository self-check with iteration data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"The repository ful name is criteo/criteo-api-sdk-generator\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.full_name).to.eql(\"criteo/criteo-api-sdk-generator\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The repository's owner name is criteo\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.owner.login).to.eql(\"criteo\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.github.com/repos/{{githubUser}}/{{githubRepo}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"{{githubUser}}",
+						"{{githubRepo}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
