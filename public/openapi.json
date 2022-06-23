@@ -51,6 +51,11 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CollectionRunInput"
+              },
+              "examples": {
+                "CollectionRunInputExample": {
+                  "$ref": "#/components/examples/CollectionRunInputExample"
+                }
               }
             }
           }
