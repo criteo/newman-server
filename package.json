@@ -1,6 +1,6 @@
 {
   "name": "newman-server",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A REST server for Newman",
   "repository": "github:ouvreboite/newman-server",
   "main": "cli.js",
