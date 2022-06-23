@@ -22,7 +22,7 @@ class Application{
     
     expressApp.post(
         '/run/:reporter',
-        param('reporter').isIn(['html','json']).withMessage('Only the json and html reporters are supported'),
+        param('reporter').isIn(['html','json','junit']).withMessage('Only the json, html and junit reporters are supported'),
         body('collection').isJSON().withMessage('The test collection must be provided as a JSON string'),
         body('iterationData').optional().isJSON().withMessage('The test iteration data must be provided as a JSON string'),
         (req, res) => {

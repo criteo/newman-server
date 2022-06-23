@@ -21,17 +21,25 @@ class NewmanRunner{
     buildRunSetting(reporter, collection, iterationData){
         switch (reporter) {
             case 'html':
-                const uniqueFileName = this.reportsFolder+'/htmlResults'+uuidv4()+'.html';
+                const uniqueHtmlFileName = this.reportsFolder+'/htmlResults'+uuidv4()+'.html';
                 return {
                     collection: collection,
                     iterationData: iterationData,
                     reporters: 'html',
-                    reporter : { html : { export : uniqueFileName } }
+                    reporter : { html : { export : uniqueHtmlFileName } }
                 };
             case 'json':
                 return {
                     collection: collection,
                     iterationData: iterationData
+                };
+            case 'junit':
+                const uniqueXmlFileName = this.reportsFolder+'/htmlResults'+uuidv4()+'.xml';
+                return {
+                    collection: collection,
+                    iterationData: iterationData,
+                    reporters: 'junit',
+                    reporter : { junit : { export : uniqueXmlFileName } }
                 };
             default:
             throw 'Reporter type is unknown: '+reporter+". Only html and json are supported"; 
@@ -48,7 +56,8 @@ class NewmanRunner{
 
         switch (reporter) {
             case 'html':
-                const uniqueFileName = ""+runSettings.reporter.html.export;
+            case 'junit':
+                const uniqueFileName = ""+runSettings.reporter[reporter].export;
                 var options = {
                     root: path.join(__dirname)
                 };

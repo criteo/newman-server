@@ -93,6 +93,27 @@ describe('Run endpoints', () => {
       expect(files.length).toEqual(0);
     });
   });
+
+  it('POST /run/junit should test the Github API and return the JUnit result when the collection is provided', async () => {
+    const input = new InputBuilder().withCollection(CollectionType.ValidStandalone).build();
+    const res = await requestWithSupertest.post('/run/junit').send(input);
+
+    expect(res.status).toEqual(200);
+    expect(res.type).toEqual(expect.stringContaining('xml'));
+  });
+
+  it('POST /run/junit should purge the JUnit file after sending it', async () => {
+    const input = new InputBuilder().withCollection(CollectionType.ValidStandalone).build();
+    await requestWithSupertest.post('/run/junit').send(input);
+
+    const reportsDir = './temp_reports';
+    expect(fs.existsSync(reportsDir)).toBeTruthy();
+
+    fs.readdir(reportsDir, (err, files) => {
+      expect(err).toBeNull();
+      expect(files.length).toEqual(0);
+    });
+  });
 });
 
 describe('OpenApi documentation', () => {   

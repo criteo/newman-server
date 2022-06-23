@@ -19,7 +19,9 @@ paths:
                 $ref: '#/components/examples/CollectionRunInputExample'
       responses:
         '200':
-          description: The JSON reporter output. This is the "run" part of the standard JSON reporter bundled with newman
+          description: >-
+            The JSON reporter output. This is the "run" part of the standard
+            JSON reporter bundled with newman
           content:
             application/json:
               examples:
@@ -44,6 +46,34 @@ paths:
           content:
             text/html:
               example: HTML ouput
+  /run/junit:
+    post:
+      operationId: runJUnit
+      summary: Run a Postman collection and output the JUnit (XML) result
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectionRunInput'
+            examples:
+              CollectionRunInputExample:
+                $ref: '#/components/examples/CollectionRunInputExample'
+      responses:
+        '200':
+          description: The JUnit/XML reporter output
+          content:
+            application:
+              examples:
+                xml:
+                  value: |
+                    <testsuites name="Newman" tests="1" time="0.293"> 
+                      <testsuite name="Github repository self-check" id="..." timestamp="..." tests="3" failures="0" errors="0" time="0.293">
+                          <testcase name="Status code is 200" time="0.293" classname="Newman"/>
+                          <testcase name="The repository ful name is ouvreboite/newman-server" time="0.293" classname="Newman"/>
+                          <testcase name="The repository''s owner name is ouvreboite" time="0.293" classname="Newman"/>
+                      </testsuite>
+                    </testsuites>
 components:
   schemas:
     CollectionRunInput:
@@ -62,7 +92,8 @@ components:
           description: the stringified JSON iteration data file.
           externalDocs:
             description: more information about the iteration data file
-            url: https://learning.postman.com/docs/running-collections/working-with-data-files/
+            url: >-
+              https://learning.postman.com/docs/running-collections/working-with-data-files/
   examples:
     CollectionRunInputExample:
       value:
@@ -89,16 +120,20 @@ components:
               id: 17d87a3b-fdc8-4b18-9815-950a42d87f59
               name: A simple GET request
               request:
-                url: https://postman-echo.com/get?source=newman-sample-github-collection
+                url: >-
+                  https://postman-echo.com/get?source=newman-sample-github-collection
                 method: GET
               event:
                 - listen: test
                   script:
                     type: text/javascript
                     exec:
-                      - tests["response code is 200"] = (responseCode.code === 200);
+                      - >-
+                        tests["response code is 200"] = (responseCode.code ===
+                        200);
             request:
-              url: https://postman-echo.com/get?source=newman-sample-github-collection
+              url: >-
+                https://postman-echo.com/get?source=newman-sample-github-collection
               method: GET
               header: []
               body: {}
