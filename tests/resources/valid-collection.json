@@ -16,14 +16,14 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"pm.test(\"The repository ful name is criteo/criteo-api-sdk-generator\", function () {\r",
+							"pm.test(\"The repository ful name is ouvreboite/newman-server\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.full_name).to.eql(\"criteo/criteo-api-sdk-generator\");\r",
+							"    pm.expect(jsonData.full_name).to.eql(\"ouvreboite/newman-server\");\r",
 							"});\r",
 							"\r",
-							"pm.test(\"The repository's owner name is criteo\", function () {\r",
+							"pm.test(\"The repository's owner name is ouvreboite\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.owner.login).to.eql(\"criteo\");\r",
+							"    pm.expect(jsonData.owner.login).to.eql(\"ouvreboite\");\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -34,7 +34,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://api.github.com/repos/criteo/criteo-api-sdk-generator",
+					"raw": "https://api.github.com/repos/ouvreboite/newman-server",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -43,8 +43,8 @@
 					],
 					"path": [
 						"repos",
-						"criteo",
-						"criteo-api-sdk-generator"
+						"ouvreboite",
+						"newman-server"
 					]
 				}
 			},
