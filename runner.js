@@ -5,6 +5,8 @@ const fs = require("fs");
 
 class NewmanRunner{
     constructor(reportsFolder = './temp_reports') {
+        if(reportsFolder.endsWith('/'))
+            reportsFolder = reportsFolder.slice(0, -1);
         this.reportsFolder = reportsFolder;
     }
 
@@ -66,7 +68,7 @@ class NewmanRunner{
                 if (err) throw err;
                 
                 for (const file of files) {
-                    fs.unlinkSync(folder+file);
+                    fs.unlinkSync(this.reportsFolder+'/'+file);
                 }
             });
             console.log(`Temporary report folder purged :${this.reportsFolder}`);
