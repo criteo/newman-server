@@ -14,7 +14,7 @@ class Application{
     expressApp.use(express.static('public'));
     var options = {
       swaggerOptions: {
-        url: '/openapi.json'
+        url: '/openapi.yaml'
       }
     }
     expressApp.use('/api-docs', swaggerUi.serve, swaggerUi.setup(null, options));

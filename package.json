@@ -6,7 +6,7 @@
   "main": "cli.js",
   "bin": "cli.js",
   "scripts": {
-    "devStart": "nodemon cli.js run --port=8080",
+    "devStart": "nodemon cli.js",
     "test": "jest --testTimeout=10000"
   },
   "keywords": [

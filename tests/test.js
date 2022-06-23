@@ -96,10 +96,10 @@ describe('Run endpoints', () => {
 });
 
 describe('OpenApi documentation', () => {   
-  it('GET /openapi.json should return the openapi file', async () => {
-    const res = await requestWithSupertest.get('/openapi.json');
+  it('GET /openapi.yaml should return the openapi file', async () => {
+    const res = await requestWithSupertest.get('/openapi.yaml');
     expect(res.status).toEqual(200);
-    expect(res.type).toEqual(expect.stringContaining('json'));
+    expect(res.type).toEqual(expect.stringContaining('yaml'));
   });
 
   it('GET /api-docs should return the swagger editor and the openapi spec', async () => {
