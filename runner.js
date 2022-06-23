@@ -10,7 +10,8 @@ class NewmanRunner{
         this.reportsFolder = reportsFolder;
     }
 
-    runCollection(res, reporter, collection, iterationData){
+    runCollection(res, type, collection, iterationData){
+        const reporter = this.reporterFromType(type);
         const runSettings = this.buildRunSetting(reporter, collection, iterationData);
         newman.run(
             runSettings, 
@@ -18,15 +19,19 @@ class NewmanRunner{
         );
     }
 
+    reporterFromType(type){
+        return type == 'html'?'htmlextra':type;
+    }
+
     buildRunSetting(reporter, collection, iterationData){
         switch (reporter) {
-            case 'html':
+            case 'htmlextra':
                 const uniqueHtmlFileName = this.reportsFolder+'/htmlResults'+uuidv4()+'.html';
                 return {
                     collection: collection,
                     iterationData: iterationData,
-                    reporters: 'html',
-                    reporter : { html : { export : uniqueHtmlFileName } }
+                    reporters: 'htmlextra',
+                    reporter : { htmlextra : { export : uniqueHtmlFileName } }
                 };
             case 'json':
                 return {
@@ -55,7 +60,7 @@ class NewmanRunner{
         }
 
         switch (reporter) {
-            case 'html':
+            case 'htmlextra':
             case 'junit':
                 const uniqueFileName = ""+runSettings.reporter[reporter].export;
                 var options = {

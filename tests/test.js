@@ -11,7 +11,7 @@ describe('Run endpoints', () => {
   it('POST /run/xxx should return 400 because the xxx reporter is not supported', async () => {
     const input = new InputBuilder().withCollection(CollectionType.ValidStandalone).build();
     const res = await requestWithSupertest.post('/run/xxx').send(input);
-    expect400errorOnField(res, 'reporter');
+    expect400errorOnField(res, 'type');
   });
 
   it('POST /run/json should return 400 when no collection is provided', async () => {

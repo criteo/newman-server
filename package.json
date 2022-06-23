@@ -18,7 +18,7 @@
     "express": "^4.18.1",
     "express-validator": "^6.14.2",
     "newman": "^5.3.2",
-    "newman-reporter-html": "^1.0.5",
+    "newman-reporter-htmlextra": "^1.22.9",
     "swagger-ui-express": "^4.4.0",
     "uuid": "^8.3.2",
     "yargs": "^16.2.0"

@@ -21,8 +21,8 @@ class Application{
     expressApp.use(express.json());
     
     expressApp.post(
-        '/run/:reporter',
-        param('reporter').isIn(['html','json','junit']).withMessage('Only the json, html and junit reporters are supported'),
+        '/run/:type',
+        param('type').isIn(['html','json','junit']).withMessage('Only the json, html and junit reports are supported'),
         body('collection').isJSON().withMessage('The test collection must be provided as a JSON string'),
         body('iterationData').optional().isJSON().withMessage('The test iteration data must be provided as a JSON string'),
         (req, res) => {
@@ -33,7 +33,7 @@ class Application{
     
           const collection = JSON.parse(req.body.collection);
           const iterationData = req.body.iterationData? JSON.parse(req.body.iterationData):null;
-          this.newmanRunner.runCollection(res, req.params.reporter, collection, iterationData);
+          this.newmanRunner.runCollection(res, req.params.type, collection, iterationData);
         },
     );
 
