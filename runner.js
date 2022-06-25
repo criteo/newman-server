@@ -52,27 +52,30 @@ class NewmanRunner{
     }
 
     sendCollectionResult(reporter, res, err, summary, runSettings){
-        if(err){
-            console.error(err);
-            res.status(500);
-            res.send({error:""+err});
+        if(!this.handleError(err, res))
             return;
-        }
 
         switch (reporter) {
             case 'htmlextra':
             case 'junit':
-                const uniqueFileName = ""+runSettings.reporter[reporter].export;
-                var options = {
-                    root: path.join(__dirname)
-                };
-                res.sendFile(uniqueFileName, options, () =>fs.unlinkSync(uniqueFileName));
+                const uniqueFileNamePath = ""+runSettings.reporter[reporter].export;
+                var options = {};
+                if(!path.isAbsolute(uniqueFileNamePath)) {
+                    options = {
+                        root: path.join(".")
+                    };
+                }
+
+                res.sendFile(uniqueFileNamePath, options, (err) => {
+                    this.handleError(err, res);
+                    fs.unlinkSync(uniqueFileNamePath);
+                });
                 break;
             case 'json':
                 res.send(summary.run);
                 break;
             default:
-            throw 'Reporter type is unknown: '+reporter+". Only html and json are supported"; 
+                throw 'Reporter type is unknown: '+reporter+". Only htmlextra, json and junit are supported"; 
         }
     }
 
@@ -92,6 +95,16 @@ class NewmanRunner{
                 console.log(`Temporary report folder created :${this.reportsFolder}`);
             })
         }
+    }
+
+    handleError(err, res){
+        if(err){
+            console.error(err); 
+            res.status(500);
+            res.send({error:""+err});
+            return false;
+        }
+        return true;
     }
 }
 
