@@ -15,3 +15,18 @@ And then, you can call **POST /run/json**, **POST /run/html** or **POST /run/jun
 
 To have more details about the endpoints shape, you can look at the server [OpenApi documentation]( https://editor.swagger.io/?url=https://raw.githubusercontent.com/ouvreboite/newman-server/main/public/openapi.yaml).
 
+# Developper's guide
+
+Local run
+```sh
+$ npm install
+$ npm run devStart
+```
+
+Install the CLI locally
+```sh
+$ npm pack 
+$ cd some-test-folder
+$ npm install ..\newman-server-x.x.x.tgz
+$ npx newman-server
+```
