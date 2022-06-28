@@ -1,5 +1,4 @@
 const {Application} = require('../app');
-const {InputBuilder, CollectionType, DataType} = require('./input-builder');
 const supertest = require('supertest');
 const fs = require("fs");
 const { NewmanRunner } = require('../runner');
@@ -9,110 +8,144 @@ const requestWithSupertest = supertest(app.expressApp);
 
 describe('Run endpoints', () => {   
   it('POST /run/xxx should return 400 because the xxx reporter is not supported', async () => {
-    const input = new InputBuilder().withCollection(CollectionType.ValidStandalone).build();
-    const res = await requestWithSupertest.post('/run/xxx').send(input);
-    expect400errorOnField(res, 'type');
+    await requestWithSupertest.post('/run/xxx')
+      .attach('collectionFile', CollectionFile.Standalone)
+      .expect(400)
+      .then(res => {
+          expectErrorOnField(res, 'type', 'xxx')
+      })
   });
 
   it('POST /run/json should return 400 when no collection is provided', async () => {
-    const input = new InputBuilder().empty().build();
-    const res = await requestWithSupertest.post('/run/json').send(input);
-    expect400errorOnField(res, 'collection');
+    await requestWithSupertest.post('/run/json')
+      .expect(400)
+      .then(res => {
+          expectErrorOnField(res, 'collectionFile')
+      })
   });
 
   it('POST /run/json should return 400 when provided collection is not a JSON string', async () => {
-    const input = new InputBuilder().withCollection(CollectionType.Invalid).build();
-    const res = await requestWithSupertest.post('/run/json').send(input);
-    expect400errorOnField(res, 'collection');
+    await requestWithSupertest.post('/run/json')
+      .attach('collectionFile', CollectionFile.InvalidType)
+      .expect(400)
+      .then(res => {
+          expectErrorOnField(res, 'collectionFile', 'collection-invalid-type.txt')
+      })
   });
 
   it('POST /run/json should return 400 when provided iterationData is not a JSON string', async () => {
-    const input = new InputBuilder().withCollection(CollectionType.ValidWithIterationData).withIterationData(DataType.Invalid).build();
-    const res = await requestWithSupertest.post('/run/json').send(input);
-    expect400errorOnField(res, 'iterationData');
+    await requestWithSupertest.post('/run/json')
+      .attach('collectionFile', CollectionFile.ValidButNeedIterationData)
+      .attach('iterationDataFile', IterationFile.InvalidType)
+      .expect(400)
+      .then(res => {
+          expectErrorOnField(res, 'iterationDataFile', 'iteration-invalid-type.txt')
+      })
   });
 
   it('POST /run/json should test the Github API and return the JSON result when the collection is provided', async () => {
-    const input = new InputBuilder().withCollection(CollectionType.ValidStandalone).build();
-    const res = await requestWithSupertest.post('/run/json').send(input);
-
-    //the sample collection should run sucessfully
-    expect(res.status).toEqual(200);
-    expect(res.type).toEqual(expect.stringContaining('json'));
-    
-    //the returned JSON should contains the iterations results (1 valid iteration)
-    expect(res.body).toHaveProperty('stats');
-    expect(res.body.stats).toHaveProperty('iterations');
-    expect(res.body.stats.iterations.total).toEqual(1);
-    expect(res.body.stats.iterations.pending).toEqual(0);
-    expect(res.body.stats.iterations.failed).toEqual(0);
+    await requestWithSupertest.post('/run/json')
+      .attach('collectionFile', CollectionFile.Standalone)
+      .expect(200)
+      .then(res => {
+        //the sample collection should run sucessfully
+        expect(res.type).toEqual(expect.stringContaining('json'));
+        
+        //the returned JSON should contains the iterations results (1 valid iteration)
+        expect(res.body).toHaveProperty('stats');
+        expect(res.body.stats).toHaveProperty('iterations');
+        expect(res.body.stats.iterations.total).toEqual(1);
+        expect(res.body.stats.iterations.pending).toEqual(0);
+        expect(res.body.stats.iterations.failed).toEqual(0);
+      })
   });
 
   it('POST /run/json should test the Github API and return the JSON result when the collection and iteration data is provided', async () => {
-    const input = new InputBuilder().withCollection(CollectionType.ValidWithIterationData).withIterationData(DataType.Valid).build();
-    const res = await requestWithSupertest.post('/run/json').send(input);
+    await requestWithSupertest.post('/run/json')
+      .attach('collectionFile', CollectionFile.ValidButNeedIterationData)
+      .attach('iterationDataFile', IterationFile.Valid)
+      .expect(200)
+      .then(res => {
+        //the sample collection should run sucessfully
+        expect(res.type).toEqual(expect.stringContaining('json'));
+        
+        //the returned JSON should contains the iterations results (2 valid iteration, as specified in the iterations data file), so 6 assertions
+        expect(res.body).toHaveProperty('stats');
+        
+        expect(res.body.stats).toHaveProperty('iterations');
+        expect(res.body.stats.iterations.total).toEqual(2);
+        expect(res.body.stats.iterations.pending).toEqual(0);
+        expect(res.body.stats.iterations.failed).toEqual(0);
 
-    //the sample collection should run sucessfully
-    expect(res.status).toEqual(200);
-    expect(res.type).toEqual(expect.stringContaining('json'));
-    
-    //the returned JSON should contains the iterations results (2 valid iteration, as specified in the iteraiton data file)
-    expect(res.body).toHaveProperty('stats');
-    expect(res.body.stats).toHaveProperty('iterations');
-    expect(res.body.stats.assertions.total).toEqual(6);
-    expect(res.body.stats.assertions.pending).toEqual(0);
-    expect(res.body.stats.assertions.failed).toEqual(0);
+        expect(res.body.stats).toHaveProperty('assertions');
+        expect(res.body.stats.assertions.total).toEqual(6);
+        expect(res.body.stats.assertions.pending).toEqual(0);
+        expect(res.body.stats.assertions.failed).toEqual(0);
+      })
   });
 
   it('POST /run/json should return 500 if newman is inable to run the collection', async () => {
-    const input = new InputBuilder().withCollection(CollectionType.ValidWithIterationData).withIterationData(DataType.Throwing).build();
-    const res = await requestWithSupertest.post('/run/json').send(input);
-    expect(res.status).toEqual(500);
-    expect(res.type).toEqual(expect.stringContaining('json'));
-    
-    expect(res.body).toHaveProperty('error');
+    await requestWithSupertest.post('/run/json')
+      .attach('collectionFile', CollectionFile.ValidButNeedIterationData)
+      .attach('iterationDataFile', IterationFile.IncorrectStructure)
+      .expect(500)
+      .then(res => {
+        expect(res.type).toEqual(expect.stringContaining('json'));
+        expect(res.body).toHaveProperty('error');
+      }
+    );
   });
 
   it('POST /run/html should test the Github API and return the HTML result when the collection is provided', async () => {
-    const input = new InputBuilder().withCollection(CollectionType.ValidStandalone).build();
-    const res = await requestWithSupertest.post('/run/html').send(input);
-
-    expect(res.status).toEqual(200);
-    expect(res.type).toEqual(expect.stringContaining('html'));
+    await requestWithSupertest.post('/run/html')
+      .attach('collectionFile', CollectionFile.Standalone)
+      .expect(200)
+      .then(res => {
+        expect(res.type).toEqual(expect.stringContaining('html'));
+      }
+    );
   });
 
   it('POST /run/html should purge the HTML file after sending it', async () => {
-    const input = new InputBuilder().withCollection(CollectionType.ValidStandalone).build();
-    await requestWithSupertest.post('/run/html').send(input);
+    await requestWithSupertest.post('/run/html')
+      .attach('collectionFile', CollectionFile.Standalone)
+      .expect(200)
+      .then(res => {
+        const reportsDir = './temp_reports';
+        expect(fs.existsSync(reportsDir)).toBeTruthy();
 
-    const reportsDir = './temp_reports';
-    expect(fs.existsSync(reportsDir)).toBeTruthy();
-
-    fs.readdir(reportsDir, (err, files) => {
-      expect(err).toBeNull();
-      expect(files.length).toEqual(0);
-    });
+        fs.readdir(reportsDir, (err, files) => {
+          expect(err).toBeNull();
+          expect(files.length).toEqual(0);
+        });
+      }
+    );
   });
 
   it('POST /run/junit should test the Github API and return the JUnit result when the collection is provided', async () => {
-    const input = new InputBuilder().withCollection(CollectionType.ValidStandalone).build();
-    const res = await requestWithSupertest.post('/run/junit').send(input);
-
-    expect(res.status).toEqual(200);
-    expect(res.type).toEqual(expect.stringContaining('xml'));
+    await requestWithSupertest.post('/run/junit')
+      .attach('collectionFile', CollectionFile.Standalone)
+      .expect(200)
+      .then(res => {
+        expect(res.type).toEqual(expect.stringContaining('xml'));
+      }
+    );
   });
 
   it('POST /run/junit should purge the JUnit file after sending it', async () => {
-    const input = new InputBuilder().withCollection(CollectionType.ValidStandalone).build();
-    await requestWithSupertest.post('/run/junit').send(input);
+    await requestWithSupertest.post('/run/junit')
+      .attach('collectionFile', CollectionFile.Standalone)
+      .expect(200)
+      .then(res => {
+        const reportsDir = './temp_reports';
+        expect(fs.existsSync(reportsDir)).toBeTruthy();
 
-    const reportsDir = './temp_reports';
-    expect(fs.existsSync(reportsDir)).toBeTruthy();
-
-    fs.readdir(reportsDir, (err, files) => {
-      expect(err).toBeNull();
-      expect(files.length).toEqual(0);
-    });
+        fs.readdir(reportsDir, (err, files) => {
+          expect(err).toBeNull();
+          expect(files.length).toEqual(0);
+        });
+      }
+    );
   });
 });
 
@@ -130,11 +163,22 @@ describe('OpenApi documentation', () => {
   });
 });
 
-function expect400errorOnField(res, field){
+function expectErrorOnField(res, field, value){
   expect(res.type).toEqual(expect.stringContaining('json'));
   expect(res.body).toHaveProperty('errors');
-  if(res.body.errors.length > 1)
-    console.log(res.body);
   expect(res.body.errors.length).toEqual(1);
   expect(res.body.errors[0].param).toEqual(field);
+  expect(res.body.errors[0].value).toEqual(value);
+}
+
+const CollectionFile = {
+	InvalidType: "./tests/resources/collection-invalid-type.txt",
+	Standalone:  './tests/resources/collection-standalone.json',
+	ValidButNeedIterationData: './tests/resources/collection-valid-need-iteration-data.json'
+}
+
+const IterationFile = {
+	InvalidType: "./tests/resources/iteration-invalid-type.txt",
+	Valid: './tests/resources/iteration-valid.json',
+	IncorrectStructure: './tests/resources/iteration-incorrect-structure.json'
 }
