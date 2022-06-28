@@ -59,9 +59,9 @@ describe('Run endpoints', () => {
     //the returned JSON should contains the iterations results (2 valid iteration, as specified in the iteraiton data file)
     expect(res.body).toHaveProperty('stats');
     expect(res.body.stats).toHaveProperty('iterations');
-    expect(res.body.stats.iterations.total).toEqual(2);
-    expect(res.body.stats.iterations.pending).toEqual(0);
-    expect(res.body.stats.iterations.failed).toEqual(0);
+    expect(res.body.stats.assertions.total).toEqual(6);
+    expect(res.body.stats.assertions.pending).toEqual(0);
+    expect(res.body.stats.assertions.failed).toEqual(0);
   });
 
   it('POST /run/json should return 500 if newman is inable to run the collection', async () => {

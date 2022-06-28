@@ -34,7 +34,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://api.github.com/repos/{{githubUser}}/{{githubRepo}}",
+					"raw": "https://api.github.com/repos/{{githubUser}}/{{githubRepository}}",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -44,7 +44,7 @@
 					"path": [
 						"repos",
 						"{{githubUser}}",
-						"{{githubRepo}}"
+						"{{githubRepository}}"
 					]
 				}
 			},
