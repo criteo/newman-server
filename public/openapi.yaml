@@ -11,7 +11,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/CollectionRunInput'
             examples:
@@ -34,7 +34,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/CollectionRunInput'
             examples:
@@ -53,7 +53,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/CollectionRunInput'
             examples:
@@ -80,16 +80,16 @@ components:
       type: object
       description: The Postman collection file and optional iteration data file to run
       required:
-        - collection
+        - collectionFile
       properties:
-        collection:
+        collectionFile:
           type: string
-          format: json
-          description: the stringified JSON Postman collection file
-        iterationData:
+          format: binary
+          description: the JSON Postman collection file
+        iterationDataFile:
           type: string
-          format: json
-          description: the stringified JSON iteration data file.
+          format: binary
+          description: the JSON iteration data file.
           externalDocs:
             description: more information about the iteration data file
             url: >-
@@ -153,6 +153,6 @@ components:
         failures: []
         error: null
 servers:
-  - url: localhost:8080
+  - url: /
 externalDocs:
   url: https://github.com/ouvreboite/newman-server
