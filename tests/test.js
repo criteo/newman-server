@@ -163,6 +163,14 @@ describe('OpenApi documentation', () => {
   });
 });
 
+describe('Test form', () => {   
+  it('GET / should return the HTML form', async () => {
+    const res = await requestWithSupertest.get('');
+    expect(res.status).toEqual(200);
+    expect(res.type).toEqual(expect.stringContaining('html'));
+  });
+});
+
 function expectErrorOnField(res, field, value){
   expect(res.type).toEqual(expect.stringContaining('json'));
   expect(res.body).toHaveProperty('errors');

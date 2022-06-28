@@ -31,6 +31,7 @@ function serve(port, tempReportsFolder){
     var app = new Application(runner);
     app.expressApp.listen(port, () => {
         console.log(`Server started on port ${port}`);
+        console.log(`Access http://localhost:${port} to test the server`);
         runner.purgeOrCreateReportFolder();    
     });
 }
