@@ -15,19 +15,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.1",
+    "express": "^4.18.0",
     "express-fileupload": "^1.4.0",
-    "express-validator": "^6.14.2",
-    "newman": "^5.3.2",
-    "newman-reporter-htmlextra": "^1.22.9",
+    "express-validator": "^6.14.0",
+    "newman": "^5.3.0",
+    "newman-reporter-htmlextra": "^1.22.0",
     "swagger-ui-express": "^4.4.0",
-    "uuid": "^8.3.2",
-    "yargs": "^16.2.0"
+    "uuid": "^8.3.0",
+    "yargs": "^17.5.0"
   },
   "devDependencies": {
-    "jest": "^27.5.1",
-    "nodemon": "^2.0.18",
-    "supertest": "^6.2.3"
+    "jest": "^28.1.0",
+    "nodemon": "^2.0.0",
+    "supertest": "^6.2.0"
   },
   "jest": {
     "testEnvironment": "node",
