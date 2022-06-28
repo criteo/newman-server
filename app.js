@@ -14,7 +14,7 @@ class Application{
 
   setupExpressApp(){
     const expressApp = express();
-    expressApp.use(express.static('public'));
+    expressApp.use(express.static(__dirname+'/public'));
     expressApp.use(fileUpload());
     var options = {
       swaggerOptions: {
