@@ -4,18 +4,25 @@
 
 `newman-server` is a simple NodeJS server that can run your Postman's collections, using the [newman](https://github.com/postmanlabs/newman) engine.
 
-🚩 Requires nodeJS >= 12.🚩
+🚩 Requires nodeJS >= 12🚩
 
 **Example:**
+
 ```sh
-$ npm install newman-server
+$ npm install -g newman-server
 $ newman-server
 Server started on port 8080
 Access http://localhost:8080 to test the server
 ```
 
-The server expose a simple **POST /run/{outputType}** endpoint that expect the Postman collection as a form data input. For example POST /run/json for the JSON run output.
-You can directly play with a provided basic HTML form and try running your collection by calling the server's root page.
+If you don't want to do a global installation, you can use npx to run a locally installed dependency
+```sh
+$ npm install newman-server
+$ npx newman-server
+```
+
+The server expose a simple **POST /run/{outputType}** endpoint that expect the Postman collection as a form data input. For example POST /run/json for will use the json newman reporter.
+An basic index.html is provided to try running your collection.
 
 ## Features
 
