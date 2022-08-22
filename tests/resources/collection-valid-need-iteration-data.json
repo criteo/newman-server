@@ -16,14 +16,14 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"pm.test(\"The repository ful name is ouvreboite/newman-server\", function () {\r",
+							"pm.test(\"The repository ful name is criteo/newman-server\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.full_name).to.eql(\"ouvreboite/newman-server\");\r",
+							"    pm.expect(jsonData.full_name).to.eql(\"criteo/newman-server\");\r",
 							"});\r",
 							"\r",
-							"pm.test(\"The repository's owner name is ouvreboite\", function () {\r",
+							"pm.test(\"The repository's owner name is criteo\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.owner.login).to.eql(\"ouvreboite\");\r",
+							"    pm.expect(jsonData.owner.login).to.eql(\"criteo\");\r",
 							"});"
 						],
 						"type": "text/javascript"

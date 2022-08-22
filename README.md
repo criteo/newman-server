@@ -1,4 +1,4 @@
-![Node.js CI](https://github.com/ouvreboite/newman-server/actions/workflows/node.js.yml/badge.svg)
+![Node.js CI](https://github.com/criteo/newman-server/actions/workflows/node.js.yml/badge.svg)
 
 # newman-server 
 
@@ -46,7 +46,7 @@ An basic index.html is provided to try running your collection.
 | tempReportsFolder | path   | ./temp_reports | The folder where the temporary XML and HTML report file will be created.  |
 
 ### OpenApi doc
-To have more details about the endpoints shape, you can look at the server [OpenApi documentation]( https://editor.swagger.io/?url=https://raw.githubusercontent.com/ouvreboite/newman-server/main/public/openapi.yaml)
+To have more details about the endpoints shape, you can look at the server [OpenApi documentation]( https://editor.swagger.io/?url=https://raw.githubusercontent.com/criteo/newman-server/main/public/openapi.yaml)
 
 ## Developper's guide
 

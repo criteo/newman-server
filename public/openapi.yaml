@@ -70,8 +70,8 @@ paths:
                     <testsuites name="Newman" tests="1" time="0.293"> 
                       <testsuite name="Github repository self-check" id="..." timestamp="..." tests="3" failures="0" errors="0" time="0.293">
                           <testcase name="Status code is 200" time="0.293" classname="Newman"/>
-                          <testcase name="The repository ful name is ouvreboite/newman-server" time="0.293" classname="Newman"/>
-                          <testcase name="The repository''s owner name is ouvreboite" time="0.293" classname="Newman"/>
+                          <testcase name="The repository ful name is criteo/newman-server" time="0.293" classname="Newman"/>
+                          <testcase name="The repository''s owner name is criteo" time="0.293" classname="Newman"/>
                       </testsuite>
                     </testsuites>
 components:
@@ -155,4 +155,4 @@ components:
 servers:
   - url: /
 externalDocs:
-  url: https://github.com/ouvreboite/newman-server
+  url: https://github.com/criteo/newman-server
