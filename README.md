@@ -4,7 +4,7 @@
 
 `newman-server` is a simple NodeJS server that can run your Postman's collections, using the [newman](https://github.com/postmanlabs/newman) engine.
 
-🚩 Requires nodeJS >= 12🚩
+🚩 Requires nodeJS >= 12 🚩
 
 **Example:**
 
