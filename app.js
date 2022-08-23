@@ -23,7 +23,7 @@ class Application{
       }
     }
     expressApp.use('/api/health', healthCheck());
-    expressApp.use('/api-docs', swaggerUi.serve, swaggerUi.setup(null, options));
+    expressApp.use('/api/docs', swaggerUi.serve, swaggerUi.setup(null, options));
     expressApp.use(express.json());
 
     expressApp.post('/run/:type',  
