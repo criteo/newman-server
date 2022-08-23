@@ -3,6 +3,7 @@ const fileUpload = require('express-fileupload');
 const { param, validationResult, buildCheckFunction  } = require('express-validator');
 //express-fileupload will populate res.files with the form's file, so we need a custom validator to access it
 const file = buildCheckFunction(['files']); 
+const healthCheck = require('express-healthcheck');
 const swaggerUi = require('swagger-ui-express');
 const {NewmanRunner} = require('./runner');
 
@@ -21,6 +22,7 @@ class Application{
         url: '/openapi.yaml'
       }
     }
+    expressApp.use('/api/health', healthCheck());
     expressApp.use('/api-docs', swaggerUi.serve, swaggerUi.setup(null, options));
     expressApp.use(express.json());
 

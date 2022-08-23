@@ -171,6 +171,15 @@ describe('Test form', () => {
   });
 });
 
+describe('Health Check', () => {
+  it('GET /api/health should return Ok response with uptime info', async () => {
+    const res = await requestWithSupertest.get('/api/health');
+    expect(res.status).toEqual(200);
+    expect(res.body.uptime).toBeTruthy()
+    expect(typeof res.body.uptime).toEqual("number");
+  });
+});
+
 function expectErrorOnField(res, field, value){
   expect(res.type).toEqual(expect.stringContaining('json'));
   expect(res.body).toHaveProperty('errors');
