@@ -156,8 +156,8 @@ describe('OpenApi documentation', () => {
     expect(res.type).toEqual(expect.stringContaining('yaml'));
   });
 
-  it('GET /api-docs should return the swagger editor and the openapi spec', async () => {
-    const res = await requestWithSupertest.get('/api-docs/');
+  it('GET /api/docs should return the swagger editor and the openapi spec', async () => {
+    const res = await requestWithSupertest.get('/api/docs/');
     expect(res.status).toEqual(200);
     expect(res.type).toEqual(expect.stringContaining('html'));
   });
