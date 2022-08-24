@@ -8,7 +8,7 @@ const newman = require('newman');
  * We need to make sure that the program has read/write access to the file system and that newman has been properly installed.
  */
 function runHealthChecks(tempFolder, callback) {
-  const folderPath = path.join(__dirname, tempFolder);
+  const folderPath = path.join('.', tempFolder);
 
   return tryReadResultFolder(folderPath)
     .then(() => tryWriteFileInResultFolder(folderPath))
