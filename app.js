@@ -4,6 +4,7 @@ const { param, validationResult, buildCheckFunction  } = require('express-valida
 //express-fileupload will populate res.files with the form's file, so we need a custom validator to access it
 const file = buildCheckFunction(['files']); 
 const healthCheck = require('express-healthcheck');
+const { runHealthChecks } = require('./health-checks');
 const swaggerUi = require('swagger-ui-express');
 const {NewmanRunner} = require('./runner');
 
@@ -22,7 +23,7 @@ class Application{
         url: '/openapi.yaml'
       }
     }
-    expressApp.use('/api/health', healthCheck());
+    expressApp.use('/api/health', healthCheck({ test: (callback) => runHealthChecks(this.newmanRunner.reportsFolder, callback) }));
     expressApp.use('/api/docs', swaggerUi.serve, swaggerUi.setup(null, options));
     expressApp.use(express.json());
 
