@@ -74,6 +74,36 @@ paths:
                           <testcase name="The repository''s owner name is criteo" time="0.293" classname="Newman"/>
                       </testsuite>
                     </testsuites>
+  /api/health:
+    get:
+      operationId: runHealthCheck
+      summary: Run various health checks in order to make sure that the server is in an healthy state
+      responses:
+        '200':
+          description: The server is in an healthy state
+          content:
+            application/json:
+              examples:
+                application/json:
+                  value: |
+                    {
+                      "uptime": 2075.2633214
+                    }
+        '500':
+          description: The server is in an unhealthy state
+          content:
+            application/json:
+              examples:
+                application/json:
+                  value: |
+                    {
+                      "errors": [
+                        {
+                          "code": "ENOTEMPTY",
+                          "message": "Directory not empty"
+                        }
+                      ]
+                    }
 components:
   schemas:
     CollectionRunInput:

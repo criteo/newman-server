@@ -5,6 +5,11 @@ const newman = require('newman');
 
 const testFolderPath = path.join(__dirname, 'health_check_test_folder');
 
+/**
+ * When a request is made the run a Postman collection, newman, the underlying NPM package that will run the collection,
+ * will write a report as a file on the disk, the content of this file will then be read in order to respond to the call.
+ * We need to make sure that the program has read/write access to the file system and that newman has been properly installed.
+ */
 function runHealthChecks(callback) {
   return tryReadFileSystem()
     .then(() => tryWriteFileSystem())

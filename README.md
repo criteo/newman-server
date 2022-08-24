@@ -48,6 +48,12 @@ An basic index.html is provided to try running your collection.
 ### OpenApi doc
 To have more details about the endpoints shape, you can look at the server [OpenApi documentation]( https://editor.swagger.io/?url=https://raw.githubusercontent.com/criteo/newman-server/main/public/openapi.yaml)
 
+### Health check endpoint
+The server is exposing the endpoint **GET /api/health** that verifies that the server is in an healthy state. When the endpoint is called, the program will check that:
+- It has read/write access to the file system
+- The newman NPM package has been successfully installed and is able to run a Postman collection
+If the tests succeed, the response status code will be 200, otherwize it will respond with a 500.
+
 ## Developper's guide
 
 ### Local test and run
