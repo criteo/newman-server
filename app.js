@@ -23,7 +23,7 @@ class Application{
         url: '/openapi.yaml'
       }
     }
-    expressApp.use('/api/health', healthCheck({ test: (callback) => runHealthChecks(callback) }));
+    expressApp.use('/api/health', healthCheck({ test: (callback) => runHealthChecks(this.newmanRunner.reportsFolder, callback) }));
     expressApp.use('/api/docs', swaggerUi.serve, swaggerUi.setup(null, options));
     expressApp.use(express.json());
 
