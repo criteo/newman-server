@@ -2,7 +2,7 @@ const newman = require('newman');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const fs = require("fs");
-const { toAbsolutePath } = require('./utils/path');
+const { toAbsolutePath } = require('./utils/path-utils');
 
 class NewmanRunner{
     constructor(reportsFolder = './temp_reports') {

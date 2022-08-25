@@ -5,7 +5,7 @@ function toAbsolutePath(relativePath) {
     return relativePath;
   }
 
-  return path.join(__dirname, relativePath);
+  return path.join(process.cwd(), relativePath);
 }
 
 module.exports = { toAbsolutePath };
