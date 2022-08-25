@@ -7,7 +7,9 @@
   "bin": "cli.js",
   "scripts": {
     "devStart": "nodemon cli.js",
-    "test": "jest --testTimeout=10000"
+    "test": "jest --testTimeout=10000",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix"
   },
   "keywords": [
     "newman"
@@ -26,8 +28,12 @@
     "yargs": "^17.5.0"
   },
   "devDependencies": {
+    "eslint": "^8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "jest": "^28.1.3",
     "nodemon": "^2.0.19",
+    "prettier": "^2.7.1",
     "supertest": "^6.2.4"
   },
   "jest": {

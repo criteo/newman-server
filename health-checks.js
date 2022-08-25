@@ -12,11 +12,13 @@ function runHealthChecks(folderPath, callback) {
     .then(() => tryWriteFileInReportFolder(folderPath))
     .then(() => tryRunNewman())
     .then(() => callback())
-    .catch((error) => callback(formatError(error)))
+    .catch((error) => callback(formatError(error)));
 }
 
 function tryReadReportFolder(folderPath) {
-  return new Promise((resolve, reject) => fs.readdir(folderPath, (error) => error ? reject(error) : resolve()));
+  return new Promise((resolve, reject) =>
+    fs.readdir(folderPath, (error) => (error ? reject(error) : resolve()))
+  );
 }
 
 function tryWriteFileInReportFolder(folderPath) {
@@ -25,32 +27,38 @@ function tryWriteFileInReportFolder(folderPath) {
   if (fs.existsSync(filePath)) {
     fs.unlinkSync(filePath);
   }
-  
-  return new Promise((resolve, reject) => fs.writeFile(filePath, '', (error) => {
-    if (error) return reject(error);
 
-    fs.unlinkSync(filePath);
-    return resolve();
-  }));
+  return new Promise((resolve, reject) =>
+    fs.writeFile(filePath, '', (error) => {
+      if (error) return reject(error);
+
+      fs.unlinkSync(filePath);
+      return resolve();
+    })
+  );
 }
 
 function tryRunNewman() {
-  return new Promise((resolve, reject) => newman.run({}, (error) => {
-    if (error && error.message !== 'expecting a collection to run') {
-      return reject(error);
-    }
+  return new Promise((resolve, reject) =>
+    newman.run({}, (error) => {
+      if (error && error.message !== 'expecting a collection to run') {
+        return reject(error);
+      }
 
-    return resolve();
-  }));
+      return resolve();
+    })
+  );
 }
 
 function formatError(error) {
-  return { errors: [
-    { 
-      code: error.code,
-      message: error.message,
-    }
-  ]};
+  return {
+    errors: [
+      {
+        code: error.code,
+        message: error.message,
+      },
+    ],
+  };
 }
 
 module.exports = { runHealthChecks };
