@@ -2,12 +2,11 @@ const newman = require('newman');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const fs = require("fs");
+const { toAbsolutePath } = require('./utils/path-utils');
 
 class NewmanRunner{
     constructor(reportsFolder = './temp_reports') {
-        if(reportsFolder.endsWith('/'))
-            reportsFolder = reportsFolder.slice(0, -1);
-        this.reportsFolder = reportsFolder;
+        this.reportsFolder = toAbsolutePath(reportsFolder);
     }
 
     runCollection(res, type, collection, iterationData){
@@ -15,7 +14,7 @@ class NewmanRunner{
         const runSettings = this.buildRunSetting(reporter, collection, iterationData);
         newman.run(
             runSettings, 
-            (err, summary) => this.sendCollectionResult(reporter, res, err, summary, runSettings)
+            (err, summary) => this.sendCollectionReport(reporter, res, err, summary, runSettings)
         );
     }
 
@@ -26,7 +25,7 @@ class NewmanRunner{
     buildRunSetting(reporter, collection, iterationData){
         switch (reporter) {
             case 'htmlextra':
-                const uniqueHtmlFileName = this.reportsFolder+'/htmlResults'+uuidv4()+'.html';
+                const uniqueHtmlFileName = path.join(this.reportsFolder, '/htmlResults'+uuidv4()+'.html');
                 return {
                     collection: collection,
                     iterationData: iterationData,
@@ -39,7 +38,7 @@ class NewmanRunner{
                     iterationData: iterationData
                 };
             case 'junit':
-                const uniqueXmlFileName = this.reportsFolder+'/htmlResults'+uuidv4()+'.xml';
+                const uniqueXmlFileName = path.join(this.reportsFolder, 'htmlResults'+uuidv4()+'.xml');
                 return {
                     collection: collection,
                     iterationData: iterationData,
@@ -51,14 +50,14 @@ class NewmanRunner{
         }
     }
 
-    sendCollectionResult(reporter, res, err, summary, runSettings){
+    sendCollectionReport(reporter, res, err, summary, runSettings){
         if(!this.handleError(err, res))
             return;
 
         switch (reporter) {
             case 'htmlextra':
             case 'junit':
-                const uniqueFileNamePath = ""+runSettings.reporter[reporter].export;
+                const uniqueFileNamePath = "" + runSettings.reporter[reporter].export;
                 var options = {};
                 if(!path.isAbsolute(uniqueFileNamePath)) {
                     options = {
@@ -85,7 +84,7 @@ class NewmanRunner{
                 if (err) throw err;
                 
                 for (const file of files) {
-                    fs.unlinkSync(this.reportsFolder+'/'+file);
+                    fs.unlinkSync(path.join(this.reportsFolder, file));
                 }
             });
             console.log(`Temporary report folder purged :${this.reportsFolder}`);
