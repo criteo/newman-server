@@ -11,6 +11,8 @@ const healthCheck = require('express-healthcheck');
 const { runHealthChecks } = require('./health-checks');
 const swaggerUi = require('swagger-ui-express');
 const { NewmanRunner } = require('./runner');
+const morgan = require('morgan');
+const { logger, LogLevel } = require('./logger');
 
 class Application {
   constructor(newmanRunner = new NewmanRunner()) {
@@ -20,6 +22,22 @@ class Application {
 
   setupExpressApp() {
     const expressApp = express();
+    expressApp.use(
+      morgan((tokens, req, res) => {
+        const httpVersion = tokens['http-version'](req, res);
+        const method = tokens.method(req, res);
+        const url = tokens.url(req, res);
+        const status = tokens.status(req, res);
+        const contentType = tokens.res(req, res, 'content-type');
+        const remoteAddr = tokens['remote-addr'](req, res);
+        return logger.format({
+          level: LogLevel.info,
+          message: `Request finished HTTP/${httpVersion} ${method} ${url} ${status} ${contentType}`,
+          duration: tokens['response-time'](req, res),
+          caller: remoteAddr,
+        });
+      })
+    );
     expressApp.use(express.static(__dirname + '/public'));
     expressApp.use(fileUpload());
     var options = {
@@ -65,6 +83,11 @@ class Application {
         const iterationDataFileJSON = req.files.iterationDataFile
           ? JSON.parse(req.files.iterationDataFile.data.toString())
           : null;
+
+        logger.log(
+          LogLevel.info,
+          `Running Postman collection: ${collectionFileJSON.info.name}`
+        );
 
         this.newmanRunner.runCollection(
           res,
