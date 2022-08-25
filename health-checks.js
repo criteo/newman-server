@@ -7,22 +7,20 @@ const newman = require('newman');
  * will write a report as a file on the disk, the content of this file will then be read in order to respond to the call.
  * We need to make sure that the program has read/write access to the file system and that newman has been properly installed.
  */
-function runHealthChecks(tempFolder, callback) {
-  const folderPath = path.join('.', tempFolder);
-
-  return tryReadResultFolder(folderPath)
-    .then(() => tryWriteFileInResultFolder(folderPath))
+function runHealthChecks(folderPath, callback) {
+  return tryReadReportFolder(folderPath)
+    .then(() => tryWriteFileInReportFolder(folderPath))
     .then(() => tryRunNewman())
     .then(() => callback())
     .catch((error) => callback(formatError(error)))
 }
 
-function tryReadResultFolder(folderPath) {
+function tryReadReportFolder(folderPath) {
   return new Promise((resolve, reject) => fs.readdir(folderPath, (error) => error ? reject(error) : resolve()));
 }
 
-function tryWriteFileInResultFolder(folderPath) {
-  const filePath = path.join(folderPath, 'test_file');
+function tryWriteFileInReportFolder(folderPath) {
+  const filePath = path.join(folderPath, 'tests');
 
   if (fs.existsSync(filePath)) {
     fs.unlinkSync(filePath);
