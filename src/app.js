@@ -89,11 +89,14 @@ class Application {
           collectionFileJSON &&
           collectionFileJSON.info &&
           collectionFileJSON.info.name;
-        logger.info(`Running Postman collection: ${collectionName}`);
+        const reporterType = req.params && req.params.type;
+        logger.info(
+          `Running Postman collection: ${collectionName}. Using ${reporterType} reporter.`
+        );
 
         this.newmanRunner.runCollection(
           res,
-          req.params.type,
+          reporterType,
           collectionFileJSON,
           iterationDataFileJSON
         );

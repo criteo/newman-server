@@ -68,7 +68,7 @@ When requests are made to the server, technical logs will be written to the stdo
 ```sh
 $ npm install
 $ npm test
-$ npm run devStart
+$ npm run start:dev
 ```
 
 ### Install the CLI locally
