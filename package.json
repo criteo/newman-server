@@ -6,7 +6,7 @@
   "main": "cli.js",
   "bin": "cli.js",
   "scripts": {
-    "devStart": "nodemon cli.js",
+    "start:dev": "nodemon cli.js",
     "test": "jest --testTimeout=10000",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix"

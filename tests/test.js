@@ -1,7 +1,7 @@
-const { Application } = require('../app');
+const { Application } = require('../src/app');
 const supertest = require('supertest');
 const fs = require('fs');
-const { NewmanRunner } = require('../runner');
+const { NewmanRunner } = require('../src/runner');
 
 const app = new Application(new NewmanRunner());
 const requestWithSupertest = supertest(app.expressApp);

@@ -8,11 +8,12 @@ const {
 //express-fileupload will populate res.files with the form's file, so we need a custom validator to access it
 const file = buildCheckFunction(['files']);
 const healthCheck = require('express-healthcheck');
-const { runHealthChecks } = require('./health-checks');
 const swaggerUi = require('swagger-ui-express');
-const { NewmanRunner } = require('./runner');
 const morgan = require('morgan');
-const { logger, LogLevel } = require('./logger');
+const path = require('path');
+const { runHealthChecks } = require('./api/health-checks');
+const { NewmanRunner } = require('./runner');
+const { logger, LogLevel } = require('./utils/logger');
 
 class Application {
   constructor(newmanRunner = new NewmanRunner()) {
@@ -38,7 +39,7 @@ class Application {
         });
       })
     );
-    expressApp.use(express.static(__dirname + '/public'));
+    expressApp.use(express.static(path.join(__dirname, '../public')));
     expressApp.use(fileUpload());
     var options = {
       swaggerOptions: {

@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-const { NewmanRunner } = require('./runner');
-const { Application } = require('./app');
 const yargs = require('yargs');
 const { hideBin } = require('yargs/helpers');
-const { logger } = require('./logger');
+const { NewmanRunner } = require('./src/runner');
+const { Application } = require('./src/app');
+const { logger } = require('./src/utils/logger');
 
 yargs(hideBin(process.argv))
   .scriptName('newman-server')

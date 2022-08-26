@@ -1,5 +1,9 @@
 const winston = require('winston');
-const { APPLICATION_NAME, INSTANCE_NAME, INSTANCE_ID } = require('./constants');
+const {
+  APPLICATION_NAME,
+  INSTANCE_NAME,
+  INSTANCE_ID,
+} = require('../constants');
 
 class Logger {
   constructor() {
