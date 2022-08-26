@@ -6,12 +6,20 @@ class Logger {
     this.logger = setUpWinston(this.format);
   }
 
-  log(level, message) {
-    this.logger.log({ level, message });
+  debug(message) {
+    this.logger.log({ level: LogLevel.debug, message });
   }
 
-  logError(level, message, error) {
-    this.logger.log({ level, message, error });
+  info(message) {
+    this.logger.log({ level: LogLevel.info, message });
+  }
+
+  warn(message) {
+    this.logger.log({ level: LogLevel.warn, message });
+  }
+
+  error(message, error) {
+    this.logger.log({ level: LogLevel.error, message, error });
   }
 
   format(info) {

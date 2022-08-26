@@ -88,10 +88,7 @@ class Application {
           collectionFileJSON &&
           collectionFileJSON.info &&
           collectionFileJSON.info.name;
-        logger.log(
-          LogLevel.info,
-          `Running Postman collection: ${collectionName}`
-        );
+        logger.info(`Running Postman collection: ${collectionName}`);
 
         this.newmanRunner.runCollection(
           res,
