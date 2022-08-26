@@ -55,7 +55,7 @@ The server is exposing the endpoint **GET /api/health** that verifies that the s
 If the tests succeed, the response status code will be 200, otherwise it will respond with a 500.
 
 ### Logging
-When request are made to the server, logs will be written to the stdout and stderr. You can enrich those logs by setting the following environment variables:
+When requests are made to the server, technical logs will be written to the stdout and stderr. You can enrich those logs by setting the following environment variables:
 | Variable name    | Default       | Description                                                  |
 |------------------|---------------|--------------------------------------------------------------|
 | APPLICATION_NAME | newman-server | Name of your application                                     |
