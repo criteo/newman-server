@@ -54,6 +54,14 @@ The server is exposing the endpoint **GET /api/health** that verifies that the s
 - The newman NPM package has been successfully installed and is able to run a Postman collection
 If the tests succeed, the response status code will be 200, otherwise it will respond with a 500.
 
+### Logging
+When request are made to the server, logs will be written to the stdout and stderr. You can enrich those logs by setting the following environment variables:
+| Variable name    | Default       | Description                                                  |
+|------------------|---------------|--------------------------------------------------------------|
+| APPLICATION_NAME | newman-server | Name of your application                                     |
+| INSTANCE_NAME    | ∅             | Name of the server instance where the application is hosted  |
+| INSTANCE_ID      | ∅             | Id of the server instance where the application is hosted    |
+
 ## Developper's guide
 
 ### Local test and run

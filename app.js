@@ -84,9 +84,13 @@ class Application {
           ? JSON.parse(req.files.iterationDataFile.data.toString())
           : null;
 
+        const collectionName =
+          collectionFileJSON &&
+          collectionFileJSON.info &&
+          collectionFileJSON.info.name;
         logger.log(
           LogLevel.info,
-          `Running Postman collection: ${collectionFileJSON.info.name}`
+          `Running Postman collection: ${collectionName}`
         );
 
         this.newmanRunner.runCollection(
