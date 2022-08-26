@@ -3,6 +3,7 @@ const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const { toAbsolutePath } = require('./utils/path-utils');
+const { logger } = require('./logger');
 
 class NewmanRunner {
   constructor(reportsFolder = './temp_reports') {
@@ -105,11 +106,11 @@ class NewmanRunner {
           fs.unlinkSync(path.join(this.reportsFolder, file));
         }
       });
-      console.log(`Temporary report folder purged :${this.reportsFolder}`);
+      logger.info(`Temporary report folder purged :${this.reportsFolder}`);
     } else {
       fs.mkdir(this.reportsFolder, (err) => {
         if (err) throw err;
-        console.log(`Temporary report folder created :${this.reportsFolder}`);
+        logger.log(`Temporary report folder created :${this.reportsFolder}`);
       });
     }
   }

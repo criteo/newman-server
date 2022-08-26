@@ -3,6 +3,7 @@ const { NewmanRunner } = require('./runner');
 const { Application } = require('./app');
 const yargs = require('yargs');
 const { hideBin } = require('yargs/helpers');
+const { logger } = require('./logger');
 
 yargs(hideBin(process.argv))
   .scriptName('newman-server')
@@ -32,8 +33,8 @@ function serve(port, tempReportsFolder) {
   var runner = new NewmanRunner(tempReportsFolder);
   var app = new Application(runner);
   app.expressApp.listen(port, () => {
-    console.log(`Server started on port ${port}`);
-    console.log(`Access http://localhost:${port} to test the server`);
+    logger.info(`Server started on port ${port}`);
+    logger.info(`Access http://localhost:${port} to test the server`);
     runner.purgeOrCreateReportFolder();
   });
 }

@@ -25,6 +25,8 @@
     "newman-reporter-htmlextra": "^1.22.0",
     "swagger-ui-express": "^4.5.0",
     "uuid": "^8.3.0",
+    "morgan": "^1.10.0",
+    "winston": "^3.8.1",
     "yargs": "^17.5.0"
   },
   "devDependencies": {
