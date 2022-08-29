@@ -89,14 +89,27 @@ class Application {
           collectionFileJSON &&
           collectionFileJSON.info &&
           collectionFileJSON.info.name;
-        logger.info(`Running Postman collection: ${collectionName}`);
-
-        this.newmanRunner.runCollection(
-          res,
-          req.params.type,
-          collectionFileJSON,
-          iterationDataFileJSON
+        const reporterType = req.params && req.params.type;
+        logger.info(
+          `Run for Postman collection '${collectionName}' started. Using '${reporterType}' reporter.`
         );
+
+        try {
+          this.newmanRunner.runCollection(
+            res,
+            reporterType,
+            collectionFileJSON,
+            iterationDataFileJSON
+          );
+          logger.info(
+            `Run for Postman collection '${collectionName}' ended succesfully.`
+          );
+        } catch (error) {
+          logger.error(
+            `An error occured while running Postman collection '${collectionName}'.`,
+            error
+          );
+        }
       }
     );
 
