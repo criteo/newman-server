@@ -1,9 +1,4 @@
 const winston = require('winston');
-const {
-  APPLICATION_NAME,
-  INSTANCE_NAME,
-  INSTANCE_ID,
-} = require('../constants');
 
 class Logger {
   constructor() {
@@ -29,11 +24,9 @@ class Logger {
   format(info) {
     const date = new Date();
 
-    let log = `${date.toISOString()} ${INSTANCE_NAME} [${INSTANCE_ID}] level=${
-      info.level
-    } ts=${date.toISOString()} msg="${
+    let log = `level=${info.level} ts=${date.toISOString()} msg="${
       info.message
-    }" service=${APPLICATION_NAME}`;
+    }"`;
 
     if (info.error) {
       log += ` err="${info.error.message}"`;
