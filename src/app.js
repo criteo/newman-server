@@ -12,6 +12,7 @@ const swaggerUi = require('swagger-ui-express');
 const morgan = require('morgan');
 const path = require('path');
 const { runHealthChecks } = require('./api/health-checks');
+const { generateHTMLReport } = require('./api/convert-html');
 const { NewmanRunner } = require('./runner');
 const { logger, LogLevel } = require('./utils/logger');
 
@@ -113,7 +114,28 @@ class Application {
       }
     );
 
+    expressApp.post(
+      '/convert/html',
+      (req, res) => {
+        if (!this.validateInput(req, res) || !this.validateSummary(req, res)) return;
+
+        var htmlReport = generateHTMLReport(req.body);
+        res.set('Content-Type', 'text/html');
+        res.send(Buffer.from(htmlReport));
+        }
+    );
+
     return expressApp;
+  }
+
+  validateSummary(req, res) {
+    var summary = req.body;
+    if(!summary.hasOwnProperty('collection' && 'environment' && 'globals' && 'run')){
+      res.status(400).json({ error: 'The summary is not of valid format.' });
+      return false;
+    }
+
+    return true;
   }
 
   validateInput(req, res) {

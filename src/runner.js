@@ -86,7 +86,7 @@ class NewmanRunner {
         break;
       }
       case 'json':
-        res.send(summary.run);
+        res.send(summary);
         break;
       default:
         throw (
