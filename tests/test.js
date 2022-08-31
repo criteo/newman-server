@@ -2,7 +2,6 @@ const { Application } = require('../src/app');
 const supertest = require('supertest');
 const fs = require('fs');
 const { NewmanRunner } = require('../src/runner');
-
 const app = new Application(new NewmanRunner());
 const requestWithSupertest = supertest(app.expressApp);
 
@@ -65,11 +64,12 @@ describe('Run endpoints', () => {
         expect(res.type).toEqual(expect.stringContaining('json'));
 
         //the returned JSON should contains the iterations results (1 valid iteration)
-        expect(res.body).toHaveProperty('stats');
-        expect(res.body.stats).toHaveProperty('iterations');
-        expect(res.body.stats.iterations.total).toEqual(1);
-        expect(res.body.stats.iterations.pending).toEqual(0);
-        expect(res.body.stats.iterations.failed).toEqual(0);
+        expect(res.body).toHaveProperty('run');
+        expect(res.body.run).toHaveProperty('stats');
+        expect(res.body.run.stats).toHaveProperty('iterations');
+        expect(res.body.run.stats.iterations.total).toEqual(1);
+        expect(res.body.run.stats.iterations.pending).toEqual(0);
+        expect(res.body.run.stats.iterations.failed).toEqual(0);
       });
   });
 
@@ -84,17 +84,18 @@ describe('Run endpoints', () => {
         expect(res.type).toEqual(expect.stringContaining('json'));
 
         //the returned JSON should contains the iterations results (2 valid iteration, as specified in the iterations data file), so 6 assertions
-        expect(res.body).toHaveProperty('stats');
+        expect(res.body).toHaveProperty('run');
+        expect(res.body.run).toHaveProperty('stats');
 
-        expect(res.body.stats).toHaveProperty('iterations');
-        expect(res.body.stats.iterations.total).toEqual(2);
-        expect(res.body.stats.iterations.pending).toEqual(0);
-        expect(res.body.stats.iterations.failed).toEqual(0);
+        expect(res.body.run.stats).toHaveProperty('iterations');
+        expect(res.body.run.stats.iterations.total).toEqual(2);
+        expect(res.body.run.stats.iterations.pending).toEqual(0);
+        expect(res.body.run.stats.iterations.failed).toEqual(0);
 
-        expect(res.body.stats).toHaveProperty('assertions');
-        expect(res.body.stats.assertions.total).toEqual(6);
-        expect(res.body.stats.assertions.pending).toEqual(0);
-        expect(res.body.stats.assertions.failed).toEqual(0);
+        expect(res.body.run.stats).toHaveProperty('assertions');
+        expect(res.body.run.stats.assertions.total).toEqual(6);
+        expect(res.body.run.stats.assertions.pending).toEqual(0);
+        expect(res.body.run.stats.assertions.failed).toEqual(0);
       });
   });
 
@@ -194,6 +195,31 @@ describe('Health Check', () => {
   });
 });
 
+describe('Convert HTML', () => {
+  it('POST /convert/html should return Ok response with HTML report when provided with valid JSON summary', async () => {
+    await requestWithSupertest
+      .post('/convert/html')
+      .type('json')
+      .send(fs.readFileSync(SummaryFile.Valid).toString())
+      .expect(200)
+      .then((res) => {
+        expect(res.type).toEqual(expect.stringContaining('html'));
+      });
+  });
+
+  it('POST /convert/html should return 400 response with error with invalid JSON summary', async () => {
+    await requestWithSupertest
+      .post('/convert/html')
+      .type('json')
+      .send(fs.readFileSync(SummaryFile.Invalid).toString())
+      .expect(400)
+      .then((res) => {
+        expect(res.type).toEqual(expect.stringContaining('json'));
+        expect(res.body).toHaveProperty('errors');
+      });
+  });
+});
+
 function expectErrorOnField(res, field, value) {
   expect(res.type).toEqual(expect.stringContaining('json'));
   expect(res.body).toHaveProperty('errors');
@@ -213,4 +239,9 @@ const IterationFile = {
   InvalidType: './tests/resources/iteration-invalid-type.txt',
   Valid: './tests/resources/iteration-valid.json',
   IncorrectStructure: './tests/resources/iteration-incorrect-structure.json',
+};
+
+const SummaryFile = {
+  Valid: './tests/resources/summary-valid.json',
+  Invalid: './tests/resources/summary-invalid.json',
 };
