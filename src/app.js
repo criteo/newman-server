@@ -131,9 +131,20 @@ class Application {
       (req, res) => {
         if (!this.validateInput(req, res)) return;
 
-        var htmlReport = generateHTMLReport(req.body);
-        res.set('Content-Type', 'text/html');
-        res.send(Buffer.from(htmlReport));
+        logger.info(
+          `Starting the conversion of JSON summary to HTML report for collection '${summary.collection.info.name}'.`
+        );
+
+        try {
+          var htmlReport = generateHTMLReport(req.body);
+          res.set('Content-Type', 'text/html');
+          res.send(Buffer.from(htmlReport));
+        } catch (error) {
+          logger.error(
+            `An error occured while converting JSON summary to HTML report.`,
+            error
+          );
+        }
       }
     );
 
