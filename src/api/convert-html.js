@@ -47,31 +47,4 @@ function generateHTMLReport(summary) {
     }
 }
 
-function validateSummary(req, res) {
-  var summary = req.body;
-
-  if (
-    !(
-      summary.hasOwnProperty('collection') &&
-      summary.hasOwnProperty('environment') &&
-      summary.hasOwnProperty('globals') &&
-      summary.hasOwnProperty('run') &&
-      summary.collection.info != null &&
-      summary.run.stats != null &&
-      summary.run.executions != null
-    )
-  ) {
-    logger.error(
-        `The provided JSON summary is not of valid format.`
-    );
-    res.status(400).json({ error: 'The summary is not of valid format.' });
-    return false;
-  }
-
-  logger.info(
-    `The JSON summary for collection '${summary.collection.info.name}' has been validated.`,
-  );
-  return true;
-}
-
-module.exports = { generateHTMLReport, validateSummary };
+module.exports = { generateHTMLReport };
