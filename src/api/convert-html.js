@@ -1,6 +1,5 @@
 const { Collection, Item, Request, Response } = require('postman-collection');
 const PostmanHTMLExtraReporter = require('newman-reporter-htmlextra');
-const { logger } = require('../utils/logger');
 
 function generateHTMLReport(summary) {
   var collection = new Collection(summary.collection.toString());

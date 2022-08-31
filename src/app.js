@@ -132,7 +132,7 @@ class Application {
         if (!this.validateInput(req, res)) return;
 
         logger.info(
-          `Starting the conversion of JSON summary to HTML report for collection '${summary.collection.info.name}'.`
+          `Starting the conversion of JSON summary to HTML report for collection '${req.body.collection.info.name}'.`
         );
 
         try {
