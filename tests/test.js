@@ -215,8 +215,7 @@ describe('Convert HTML', () => {
       .expect(400)
       .then((res) => {
         expect(res.type).toEqual(expect.stringContaining('json'));
-        expect(res.body).toHaveProperty('error');
-        expect(res.body.error).toEqual(expect.stringContaining('format'));
+        expect(res.body).toHaveProperty('errors');
       });
   });
 });
