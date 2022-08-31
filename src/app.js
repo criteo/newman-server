@@ -118,21 +118,24 @@ class Application {
     expressApp.post(
       '/convert/html',
       check('collection')
-      .exists()
-      .withMessage('The JSON summary must have postman collection information.'),
+        .exists()
+        .withMessage(
+          'The JSON summary must have postman collection information.'
+        ),
       check('run')
-      .exists()
-      .withMessage('The JSON summary must have collection run data.'),
+        .exists()
+        .withMessage('The JSON summary must have collection run data.'),
       check('run.executions')
-      .exists()
-      .withMessage('The collection run data is not valid.'),
+        .exists()
+        .withMessage('The collection run data is not valid.'),
       (req, res) => {
         if (!this.validateInput(req, res)) return;
 
         var htmlReport = generateHTMLReport(req.body);
         res.set('Content-Type', 'text/html');
         res.send(Buffer.from(htmlReport));
-    });
+      }
+    );
 
     return expressApp;
   }

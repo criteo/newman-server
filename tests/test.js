@@ -244,4 +244,4 @@ const IterationFile = {
 const SummaryFile = {
   Valid: './tests/resources/summary-valid.json',
   Invalid: './tests/resources/summary-invalid.json',
-}
+};
