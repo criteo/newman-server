@@ -9,6 +9,7 @@
         }
         form{
             padding: 10px;
+            margin-bottom: 15px;
             background-color: gainsboro;
         }
     </style>
@@ -60,6 +61,20 @@
             <button type="submit" id="run-button" class="btn btn-primary">Run the collection</button>
             <div id="run-button-description" class="form-text"></div>
         </form>
+
+        <form id='newman-convert-form' method='post' encType="multipart/form-data" action="/convert/html">
+            <div class="mb-3">
+                <label for="formFile" class="form-label"><strong>Collection summary file</strong></label>
+                <input class="form-control" type="file" name="summaryFile" accept=".json" required>
+                <div class="form-text">
+                    Once you've ran your collection in Newman with the output format selected to be JSON, you will receive the 
+                    run summary. Add the summary to a JSON file and this is the file that will be used by newman to convert to HTML report.
+                </div>
+            </div>
+
+            <button type="submit" id="convert-button" class="btn btn-primary">Convert to HTML</button>
+            <div id="convert-button-description" class="form-text"></div>
+        </form>
     </div>
     <script>
         function updateAction(action){
@@ -67,6 +82,11 @@
             document.getElementById('run-button-description').textContent ='Will call POST '+action+'';
         }
         updateAction('/run/html')
+
+        function convertToHtml(){
+            document.getElementById('convert-button-description').textContent ='Will call POST /convert/html';
+        }
+        convertToHtml()
     </script>
 </body>
 </html>

@@ -111,10 +111,11 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+        content:
+          multipart/form-data:
             examples:
               CollectionRunInputExample:
-                $ref: '#/components/examples/CollectionRunJsonOuputExample'
+                $ref: '#/components/examples/CollectionRunInputExample'
       responses:
         '200':
           description: The HTML reporter output
@@ -122,14 +123,14 @@ paths:
             text/html:
               example: HTML output
         '400':
-          description: The provided JSON is not of valid format
+          description: The provided summary file is not of valid format
           content:
             application/json:
               examples:
                 application/json:
                   value: |
                     {
-                      "errors": "The summary is not of valid format."
+                      "errors": "The summary file is not of valid format. Please use the summary generated using Newman."
                     }        
 components:
   schemas:

@@ -55,7 +55,7 @@ The server is exposing the endpoint **GET /api/health** that verifies that the s
 If the tests succeed, the response status code will be 200, otherwise it will respond with a 500.
 
 ### Convert to HTML endpoint
-The server is exposing the endpoint **POST /convert/html** that expects JSON summary that can be received through POST /run/json. If the provided JSON summary is valid, the response will be 200 with HTML report, otherwise it will respond with a 400 and error.
+The server is exposing the endpoint **POST /convert/html** that expects JSON summary file as form data input that can be received through POST /run/json. If the provided summary file is valid, the response will be 200 with HTML report, otherwise it will respond with a 400 and error.
 
 ## Developer's guide
 

@@ -199,8 +199,7 @@ describe('Convert HTML', () => {
   it('POST /convert/html should return Ok response with HTML report when provided with valid JSON summary', async () => {
     await requestWithSupertest
       .post('/convert/html')
-      .type('json')
-      .send(fs.readFileSync(SummaryFile.Valid).toString())
+      .attach('summaryFile', SummaryFile.Valid)
       .expect(200)
       .then((res) => {
         expect(res.type).toEqual(expect.stringContaining('html'));
@@ -210,8 +209,7 @@ describe('Convert HTML', () => {
   it('POST /convert/html should return 400 response with error with invalid JSON summary', async () => {
     await requestWithSupertest
       .post('/convert/html')
-      .type('json')
-      .send(fs.readFileSync(SummaryFile.Invalid).toString())
+      .attach('summaryFile', SummaryFile.Invalid)
       .expect(400)
       .then((res) => {
         expect(res.type).toEqual(expect.stringContaining('json'));
