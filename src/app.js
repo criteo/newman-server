@@ -1,7 +1,6 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const {
-  check,
   param,
   validationResult,
   buildCheckFunction,
@@ -117,26 +116,34 @@ class Application {
 
     expressApp.post(
       '/convert/html',
-      check('collection')
+      file('summaryFile')
         .exists()
+        .bail()
+        .withMessage('The test summary file is mandatory')
+        .custom((file) => file.name && file.name.endsWith('.json'))
+        .withMessage('The test collection file must be a JSON file')
+        .custom((file) => {
+          const parsedFile = JSON.parse(file.data.toString());
+          return (
+            parsedFile.collection != null &&
+            parsedFile.run != null &&
+            parsedFile.run.executions != null
+          );
+        })
         .withMessage(
-          'The JSON summary must have postman collection information.'
+          'The test summary file is not valid. Please use the summary generated using Newman.'
         ),
-      check('run')
-        .exists()
-        .withMessage('The JSON summary must have collection run data.'),
-      check('run.executions')
-        .exists()
-        .withMessage('The collection run data is not valid.'),
       (req, res) => {
         if (!this.validateInput(req, res)) return;
 
+        const summary = JSON.parse(req.files.summaryFile.data.toString());
+
         logger.info(
-          `Starting the conversion of JSON summary to HTML report for collection '${req.body.collection.info.name}'.`
+          `Starting the conversion of JSON summary to HTML report for collection '${summary.collection.info.name}'.`
         );
 
         try {
-          var htmlReport = generateHTMLReport(req.body);
+          var htmlReport = generateHTMLReport(summary);
           res.set('Content-Type', 'text/html');
           res.send(Buffer.from(htmlReport));
         } catch (error) {
