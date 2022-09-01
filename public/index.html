@@ -20,11 +20,12 @@
         <div class="alert alert-info alert-dismissible fade show" style="text-align: justify">
             <strong>ℹ️ About</strong> <br>
             Newman-server allows you to run a Postman collection (using the newman engine) and output the result in either JSON, JUnit or HTML format.<br>
-            Below is a simple HTML form to test the server's endpoint. <br>
+            Below are simple HTML forms to test the server's endpoints. <br>
             More information on the <a href="https://github.com/criteo/newman-server">Github repository</a>
         </div>
 
         <form id='newman-form' method='post' encType="multipart/form-data" action="/run/html">
+            <h4>Running a collection</h4>
             <div class="mb-3">
                 <label for="formFile" class="form-label"><strong>Postman collection file</strong></label>
                 <input class="form-control" type="file" name="collectionFile" accept=".json" required>
@@ -38,8 +39,8 @@
                 <label for="formFile" class="form-label"><strong>Optional iteration data file</strong></label>
                 <input class="form-control" type="file" name="iterationDataFile" accept=".json">
                 <div class="form-text">
-                    The <a href="https://learning.postman.com/docs/running-collections/working-with-data-files/">data fie</a> is an optional JSON file 
-                    used to define how the value of your collection's variables for different iterations.
+                    The <a href="https://learning.postman.com/docs/running-collections/working-with-data-files/">data file</a> is an optional JSON file 
+                    used to define the value of your collection's variables for different iterations.
                 </div>
             </div>
 
@@ -63,12 +64,12 @@
         </form>
 
         <form id='newman-convert-form' method='post' encType="multipart/form-data" action="/convert/html">
+            <h4>Converting a JSON report to HTML</h4>
             <div class="mb-3">
-                <label for="formFile" class="form-label"><strong>Collection summary file</strong></label>
+                <label for="formFile" class="form-label"><strong>JSON report file</strong></label>
                 <input class="form-control" type="file" name="summaryFile" accept=".json" required>
                 <div class="form-text">
-                    Once you've ran your collection in Newman with the output format selected to be JSON, you will receive the 
-                    run summary. Add the summary to a JSON file and this is the file that will be used by newman to convert to HTML report.
+                    Provide a JSON newman report (the one you receive when calling POST /run/json) to get the corresponding HTML report.
                 </div>
             </div>
 
