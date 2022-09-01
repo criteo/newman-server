@@ -114,8 +114,8 @@ paths:
         content:
           multipart/form-data:
             examples:
-              CollectionRunInputExample:
-                $ref: '#/components/examples/CollectionRunInputExample'
+              CollectionRunJsonOuputExample:
+                $ref: '#/components/examples/CollectionRunJsonOuputExample'
       responses:
         '200':
           description: The HTML reporter output
