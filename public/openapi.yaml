@@ -111,8 +111,9 @@ paths:
       requestBody:
         required: true
         content:
-        content:
           multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CollectionRunJsonOutput'
             examples:
               CollectionRunJsonOuputExample:
                 $ref: '#/components/examples/CollectionRunJsonOuputExample'
@@ -152,6 +153,16 @@ components:
             description: more information about the iteration data file
             url: >-
               https://learning.postman.com/docs/running-collections/working-with-data-files/
+    CollectionRunJsonOutput:
+      type: object
+      description: The summary file to run.
+      required:
+        - summaryFile
+      properties:
+        summaryFile:
+          type: string
+          format: binary
+          description: the JSON collection run summary file.
   examples:
     CollectionRunInputExample:
       value:
@@ -159,70 +170,71 @@ components:
         iterationData: '[{key:"value"},{key:"value"}]'
     CollectionRunJsonOuputExample:
       value:
-        collection:
-          _:
-            postman_id: c5af0a46-1d91-4d88-a0bc-d49f740b6eee
-          item: []
-          event: []
-          variable: []
-          info:
-            _postman_id: c5af0a46-1d91-4d88-a0bc-d49f740b6eee
-            name: Exam Name
-            schema: https://schema.getpostman.com/json/collection/v2.1.0/collection.json
-        environment: {}
-        globals: {}
-        run:
-          stats:
-            iterations:
-              total: 1
-              pending: 0
-              failed: 0
-            tests:
-              total: 3
-              pending: 0
-              failed: 0
-          timings:
-            responseAverage: 849
-            started: 1472134919325
-            completed: 1472134922455
-          executions:
-            - cursor: {}
-              item:
-                id: 17d87a3b-fdc8-4b18-9815-950a42d87f59
-                name: A simple GET request
+        summary:
+          collection:
+            _:
+              postman_id: c5af0a46-1d91-4d88-a0bc-d49f740b6eee
+            item: []
+            event: []
+            variable: []
+            info:
+              _postman_id: c5af0a46-1d91-4d88-a0bc-d49f740b6eee
+              name: Exam Name
+              schema: https://schema.getpostman.com/json/collection/v2.1.0/collection.json
+          environment: {}
+          globals: {}
+          run:
+            stats:
+              iterations:
+                total: 1
+                pending: 0
+                failed: 0
+              tests:
+                total: 3
+                pending: 0
+                failed: 0
+            timings:
+              responseAverage: 849
+              started: 1472134919325
+              completed: 1472134922455
+            executions:
+              - cursor: {}
+                item:
+                  id: 17d87a3b-fdc8-4b18-9815-950a42d87f59
+                  name: A simple GET request
+                  request:
+                    url: >-
+                      https://postman-echo.com/get?source=newman-sample-github-collection
+                    method: GET
+                  event:
+                    - listen: test
+                      script:
+                        type: text/javascript
+                        exec:
+                          - >-
+                            tests["response code is 200"] = (responseCode.code ===
+                            200);
                 request:
                   url: >-
                     https://postman-echo.com/get?source=newman-sample-github-collection
                   method: GET
-                event:
-                  - listen: test
-                    script:
-                      type: text/javascript
-                      exec:
-                        - >-
-                          tests["response code is 200"] = (responseCode.code ===
-                          200);
-              request:
-                url: >-
-                  https://postman-echo.com/get?source=newman-sample-github-collection
-                method: GET
-                header: []
-                body: {}
-                description: {}
-              response:
-                status: OK
-                code: 200
-                header: []
-                body: ''
-                responseTime: 1965
-                responseSize: 311
-              id: 17d87a3b-fdc8-4b18-9815-950a42d87f59
-              assertions:
-                - assertion: response code is 200
-          transfers:
-            responseTotal: 928
-          failures: []
-          error: null
+                  header: []
+                  body: {}
+                  description: {}
+                response:
+                  status: OK
+                  code: 200
+                  header: []
+                  body: ''
+                  responseTime: 1965
+                  responseSize: 311
+                id: 17d87a3b-fdc8-4b18-9815-950a42d87f59
+                assertions:
+                  - assertion: response code is 200
+            transfers:
+              responseTotal: 928
+            failures: []
+            error: null
 servers:
   - url: /
 externalDocs:
