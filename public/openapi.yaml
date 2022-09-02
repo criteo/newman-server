@@ -113,7 +113,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CollectionRunJsonOutput'
+              $ref: '#/components/schemas/OutputSummaryFile'
             examples:
               CollectionRunJsonOuputExample:
                 $ref: '#/components/examples/CollectionRunJsonOuputExample'
@@ -153,7 +153,7 @@ components:
             description: more information about the iteration data file
             url: >-
               https://learning.postman.com/docs/running-collections/working-with-data-files/
-    CollectionRunJsonOutput:
+    OutputSummaryFile:
       type: object
       description: The summary file to run.
       required:
@@ -169,7 +169,7 @@ components:
         collection: '{"info": {...}, ...}'
         iterationData: '[{key:"value"},{key:"value"}]'
     CollectionRunJsonOuputExample:
-      url: https://github.com/criteo/newman-server/blob/main/tests/resources/summary-valid.json 
+      summaryFile: https://github.com/criteo/newman-server/blob/main/tests/resources/summary-valid.json 
 servers:
   - url: /
 externalDocs:
