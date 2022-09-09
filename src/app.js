@@ -110,6 +110,7 @@ class Application {
             `An error occured while running Postman collection '${collectionName}'.`,
             error
           );
+          res.status(500).send(`An error occured while running the collection`);
         }
       }
     );
@@ -137,9 +138,14 @@ class Application {
         if (!this.validateInput(req, res)) return;
 
         const summary = JSON.parse(req.files.summaryFile.data.toString());
+        const collectionName =
+          summary &&
+          summary.collection &&
+          summary.collection.info &&
+          summary.collection.info.name;
 
         logger.info(
-          `Starting the conversion of JSON summary to HTML report for collection '${summary.collection.info.name}'.`
+          `Starting the conversion of JSON summary to HTML report for collection '${collectionName}'.`
         );
 
         try {
@@ -149,8 +155,14 @@ class Application {
         } catch (error) {
           logger.error(
             `An error occured while converting JSON summary to HTML report.`,
-            error
+            error,
+            error && error.stack
           );
+          res
+            .status(500)
+            .send(
+              `An error occured while converting JSON summary to HTML report`
+            );
         }
       }
     );

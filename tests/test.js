@@ -99,7 +99,7 @@ describe('Run endpoints', () => {
       });
   });
 
-  it('POST /run/json should return 500 if newman is inable to run the collection', async () => {
+  it('POST /run/json should return 500 if newman is unable to run the collection', async () => {
     await requestWithSupertest
       .post('/run/json')
       .attach('collectionFile', CollectionFile.ValidButNeedIterationData)
@@ -216,6 +216,16 @@ describe('Convert HTML', () => {
         expect(res.body).toHaveProperty('errors');
       });
   });
+
+  it('POST /convert/html should return 200 response with HTML report when provided with a JSON summary for a failed run', async () => {
+    await requestWithSupertest
+      .post('/convert/html')
+      .attach('summaryFile', SummaryFile.Failure)
+      .expect(200)
+      .then((res) => {
+        expect(res.type).toEqual(expect.stringContaining('html'));
+      });
+  });
 });
 
 function expectErrorOnField(res, field, value) {
@@ -242,4 +252,5 @@ const IterationFile = {
 const SummaryFile = {
   Valid: './tests/resources/summary-valid.json',
   Invalid: './tests/resources/summary-invalid.json',
+  Failure: './tests/resources/summary-failure.json',
 };

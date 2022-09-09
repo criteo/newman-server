@@ -1,0 +1,543 @@
+{
+  "collection": {
+      "_": {
+          "postman_id": "db389e2b-d111-4c45-8e9a-a691f3ddb20e"
+      },
+      "item": [
+          {
+              "id": "ca908ebe-555a-4853-a55f-74b4af68fd6a",
+              "name": "Without Token",
+              "request": {
+                  "url": {
+                      "protocol": "https",
+                      "path": [
+                          "me"
+                      ],
+                      "host": [
+                          "apigateway",
+                          "{{env}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                  },
+                  "method": "GET",
+                  "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": []
+                  }
+              },
+              "response": [],
+              "event": [
+                  {
+                      "listen": "test",
+                      "script": {
+                          "id": "8341984b-78b9-43bd-8120-6ba20de8ac8c",
+                          "type": "text/javascript",
+                          "exec": [
+                              "pm.test(\"Status code is 401 Unauthorized.\", function () {\r",
+                              "    pm.response.to.have.status(401);\r",
+                              "})"
+                          ],
+                          "_lastExecutionId": "f6f7eaf8-b2d6-440d-b68a-415ae0e82965"
+                      }
+                  }
+              ],
+              "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+              }
+          }
+      ],
+      "event": [],
+      "variable": [],
+      "info": {
+          "_postman_id": "db389e2b-d111-4c45-8e9a-a691f3ddb20e",
+          "name": "Get Me",
+          "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+      }
+  },
+  "environment": {
+      "id": "94cbac37-c4a9-40e1-93ea-cc5e4a9e361d",
+      "values": []
+  },
+  "globals": {
+      "id": "a237921c-bd2b-4e34-95e5-ee0a8e8fecae",
+      "values": []
+  },
+  "run": {
+      "stats": {
+          "iterations": {
+              "total": 1,
+              "pending": 0,
+              "failed": 0
+          },
+          "items": {
+              "total": 1,
+              "pending": 0,
+              "failed": 0
+          },
+          "scripts": {
+              "total": 1,
+              "pending": 0,
+              "failed": 0
+          },
+          "prerequests": {
+              "total": 1,
+              "pending": 0,
+              "failed": 0
+          },
+          "requests": {
+              "total": 1,
+              "pending": 0,
+              "failed": 1
+          },
+          "tests": {
+              "total": 1,
+              "pending": 0,
+              "failed": 0
+          },
+          "assertions": {
+              "total": 1,
+              "pending": 0,
+              "failed": 1
+          },
+          "testScripts": {
+              "total": 1,
+              "pending": 0,
+              "failed": 0
+          },
+          "prerequestScripts": {
+              "total": 0,
+              "pending": 0,
+              "failed": 0
+          }
+      },
+      "timings": {
+          "responseAverage": 0,
+          "responseMin": 0,
+          "responseMax": 0,
+          "responseSd": 0,
+          "dnsAverage": 0,
+          "dnsMin": 0,
+          "dnsMax": 0,
+          "dnsSd": 0,
+          "firstByteAverage": 0,
+          "firstByteMin": 0,
+          "firstByteMax": 0,
+          "firstByteSd": 0,
+          "started": 1662650004628,
+          "completed": 1662650005367
+      },
+      "executions": [
+          {
+              "cursor": {
+                  "position": 0,
+                  "iteration": 0,
+                  "length": 1,
+                  "cycles": 1,
+                  "empty": false,
+                  "eof": false,
+                  "bof": true,
+                  "cr": false,
+                  "ref": "2e037369-8fde-4283-96a0-98381325a6a1",
+                  "httpRequestId": "2fa25e3f-6599-461c-b129-e48098f1c377"
+              },
+              "item": {
+                  "id": "ca908ebe-555a-4853-a55f-74b4af68fd6a",
+                  "name": "Without Token",
+                  "request": {
+                      "url": {
+                          "protocol": "https",
+                          "path": [
+                              "me"
+                          ],
+                          "host": [
+                              "apigateway",
+                              "{{env}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                      },
+                      "method": "GET",
+                      "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": []
+                      }
+                  },
+                  "response": [],
+                  "event": [
+                      {
+                          "listen": "test",
+                          "script": {
+                              "id": "8341984b-78b9-43bd-8120-6ba20de8ac8c",
+                              "type": "text/javascript",
+                              "exec": [
+                                  "pm.test(\"Status code is 401 Unauthorized.\", function () {\r",
+                                  "    pm.response.to.have.status(401);\r",
+                                  "})"
+                              ],
+                              "_lastExecutionId": "f6f7eaf8-b2d6-440d-b68a-415ae0e82965"
+                          }
+                      }
+                  ],
+                  "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                  }
+              },
+              "request": {
+                  "url": {
+                      "protocol": "https",
+                      "path": [
+                          "me"
+                      ],
+                      "host": [
+                          "apigateway",
+                          "{{env}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                  },
+                  "header": [
+                      {
+                          "key": "User-Agent",
+                          "value": "PostmanRuntime/7.29.0",
+                          "system": true
+                      },
+                      {
+                          "key": "Accept",
+                          "value": "*/*",
+                          "system": true
+                      },
+                      {
+                          "key": "Cache-Control",
+                          "value": "no-cache",
+                          "system": true
+                      },
+                      {
+                          "key": "Postman-Token",
+                          "value": "16aa805e-24ef-4734-856f-6993384e48b5",
+                          "system": true
+                      },
+                      {
+                          "key": "Host",
+                          "value": "apigateway.{{env}}",
+                          "system": true
+                      },
+                      {
+                          "key": "Accept-Encoding",
+                          "value": "gzip, deflate, br",
+                          "system": true
+                      },
+                      {
+                          "key": "Connection",
+                          "value": "keep-alive",
+                          "system": true
+                      }
+                  ],
+                  "method": "GET",
+                  "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": []
+                  }
+              },
+              "id": "ca908ebe-555a-4853-a55f-74b4af68fd6a",
+              "requestError": {
+                  "errno": "ENOTFOUND",
+                  "code": "ENOTFOUND",
+                  "syscall": "getaddrinfo",
+                  "hostname": "apigateway.{{env}}"
+              },
+              "assertions": [
+                  {
+                      "assertion": "Status code is 401 Unauthorized.",
+                      "skipped": false,
+                      "error": {
+                          "name": "AssertionError",
+                          "index": 0,
+                          "test": "Status code is 401 Unauthorized.",
+                          "message": "expected { Object (id, _details, ...) } to have property 'code'",
+                          "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:1)"
+                      }
+                  }
+              ]
+          }
+      ],
+      "transfers": {
+          "responseTotal": 0
+      },
+      "failures": [
+          {
+              "error": {
+                  "errno": "ENOTFOUND",
+                  "code": "ENOTFOUND",
+                  "syscall": "getaddrinfo",
+                  "hostname": "apigateway.{{env}}",
+                  "name": "Error",
+                  "message": "getaddrinfo ENOTFOUND apigateway.{{env}}",
+                  "stack": "Error: getaddrinfo ENOTFOUND apigateway.{{env}}\n    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:66:26)",
+                  "checksum": "f2808e43345335681c5186d2f80a7c02",
+                  "id": "3996599c-f7c7-41a0-8eed-41ac3fab9bcd",
+                  "timestamp": 1662650005192,
+                  "stacktrace": [
+                      {
+                          "fileName": "dns.js",
+                          "lineNumber": 66,
+                          "functionName": "GetAddrInfoReqWrap.onlookup [as oncomplete]",
+                          "typeName": "GetAddrInfoReqWrap",
+                          "methodName": "onlookup [as oncomplete]",
+                          "columnNumber": 26,
+                          "native": false
+                      }
+                  ]
+              },
+              "at": "request",
+              "source": {
+                  "id": "ca908ebe-555a-4853-a55f-74b4af68fd6a",
+                  "name": "Without Token",
+                  "request": {
+                      "url": {
+                          "protocol": "https",
+                          "path": [
+                              "me"
+                          ],
+                          "host": [
+                              "apigateway",
+                              "{{env}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                      },
+                      "method": "GET",
+                      "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": []
+                      }
+                  },
+                  "response": [],
+                  "event": [
+                      {
+                          "listen": "test",
+                          "script": {
+                              "id": "8341984b-78b9-43bd-8120-6ba20de8ac8c",
+                              "type": "text/javascript",
+                              "exec": [
+                                  "pm.test(\"Status code is 401 Unauthorized.\", function () {\r",
+                                  "    pm.response.to.have.status(401);\r",
+                                  "})"
+                              ],
+                              "_lastExecutionId": "f6f7eaf8-b2d6-440d-b68a-415ae0e82965"
+                          }
+                      }
+                  ],
+                  "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                  }
+              },
+              "parent": {
+                  "_": {
+                      "postman_id": "db389e2b-d111-4c45-8e9a-a691f3ddb20e"
+                  },
+                  "item": [
+                      {
+                          "id": "ca908ebe-555a-4853-a55f-74b4af68fd6a",
+                          "name": "Without Token",
+                          "request": {
+                              "url": {
+                                  "protocol": "https",
+                                  "path": [
+                                      "me"
+                                  ],
+                                  "host": [
+                                      "apigateway",
+                                      "{{env}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                              },
+                              "method": "GET",
+                              "body": {
+                                  "mode": "urlencoded",
+                                  "urlencoded": []
+                              }
+                          },
+                          "response": [],
+                          "event": [
+                              {
+                                  "listen": "test",
+                                  "script": {
+                                      "id": "8341984b-78b9-43bd-8120-6ba20de8ac8c",
+                                      "type": "text/javascript",
+                                      "exec": [
+                                          "pm.test(\"Status code is 401 Unauthorized.\", function () {\r",
+                                          "    pm.response.to.have.status(401);\r",
+                                          "})"
+                                      ],
+                                      "_lastExecutionId": "f6f7eaf8-b2d6-440d-b68a-415ae0e82965"
+                                  }
+                              }
+                          ],
+                          "protocolProfileBehavior": {
+                              "disableBodyPruning": true
+                          }
+                      }
+                  ],
+                  "event": [],
+                  "variable": [],
+                  "info": {
+                      "_postman_id": "db389e2b-d111-4c45-8e9a-a691f3ddb20e",
+                      "name": "Get Me",
+                      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+                  }
+              },
+              "cursor": {
+                  "position": 0,
+                  "iteration": 0,
+                  "length": 1,
+                  "cycles": 1,
+                  "empty": false,
+                  "eof": false,
+                  "bof": true,
+                  "cr": false,
+                  "ref": "2e037369-8fde-4283-96a0-98381325a6a1",
+                  "httpRequestId": "2fa25e3f-6599-461c-b129-e48098f1c377"
+              }
+          },
+          {
+              "error": {
+                  "name": "AssertionError",
+                  "index": 0,
+                  "test": "Status code is 401 Unauthorized.",
+                  "message": "expected { Object (id, _details, ...) } to have property 'code'",
+                  "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:1)",
+                  "checksum": "28e0b127cc526d6ff251f0455b74527b",
+                  "id": "b9d871f1-878d-4993-bd71-2b666d4fffd9",
+                  "timestamp": 1662650005305,
+                  "stacktrace": [
+                      {
+                          "fileName": "sandbox-script.js",
+                          "lineNumber": 1,
+                          "functionName": "Object.eval",
+                          "typeName": "Object",
+                          "methodName": "eval",
+                          "columnNumber": 1,
+                          "native": false
+                      }
+                  ]
+              },
+              "at": "assertion:0 in test-script",
+              "source": {
+                  "id": "ca908ebe-555a-4853-a55f-74b4af68fd6a",
+                  "name": "Without Token",
+                  "request": {
+                      "url": {
+                          "protocol": "https",
+                          "path": [
+                              "me"
+                          ],
+                          "host": [
+                              "apigateway",
+                              "{{env}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                      },
+                      "method": "GET",
+                      "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": []
+                      }
+                  },
+                  "response": [],
+                  "event": [
+                      {
+                          "listen": "test",
+                          "script": {
+                              "id": "8341984b-78b9-43bd-8120-6ba20de8ac8c",
+                              "type": "text/javascript",
+                              "exec": [
+                                  "pm.test(\"Status code is 401 Unauthorized.\", function () {\r",
+                                  "    pm.response.to.have.status(401);\r",
+                                  "})"
+                              ],
+                              "_lastExecutionId": "f6f7eaf8-b2d6-440d-b68a-415ae0e82965"
+                          }
+                      }
+                  ],
+                  "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                  }
+              },
+              "parent": {
+                  "_": {
+                      "postman_id": "db389e2b-d111-4c45-8e9a-a691f3ddb20e"
+                  },
+                  "item": [
+                      {
+                          "id": "ca908ebe-555a-4853-a55f-74b4af68fd6a",
+                          "name": "Without Token",
+                          "request": {
+                              "url": {
+                                  "protocol": "https",
+                                  "path": [
+                                      "me"
+                                  ],
+                                  "host": [
+                                      "apigateway",
+                                      "{{env}}"
+                                  ],
+                                  "query": [],
+                                  "variable": []
+                              },
+                              "method": "GET",
+                              "body": {
+                                  "mode": "urlencoded",
+                                  "urlencoded": []
+                              }
+                          },
+                          "response": [],
+                          "event": [
+                              {
+                                  "listen": "test",
+                                  "script": {
+                                      "id": "8341984b-78b9-43bd-8120-6ba20de8ac8c",
+                                      "type": "text/javascript",
+                                      "exec": [
+                                          "pm.test(\"Status code is 401 Unauthorized.\", function () {\r",
+                                          "    pm.response.to.have.status(401);\r",
+                                          "})"
+                                      ],
+                                      "_lastExecutionId": "f6f7eaf8-b2d6-440d-b68a-415ae0e82965"
+                                  }
+                              }
+                          ],
+                          "protocolProfileBehavior": {
+                              "disableBodyPruning": true
+                          }
+                      }
+                  ],
+                  "event": [],
+                  "variable": [],
+                  "info": {
+                      "_postman_id": "db389e2b-d111-4c45-8e9a-a691f3ddb20e",
+                      "name": "Get Me",
+                      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+                  }
+              },
+              "cursor": {
+                  "position": 0,
+                  "iteration": 0,
+                  "length": 1,
+                  "cycles": 1,
+                  "empty": false,
+                  "eof": false,
+                  "bof": true,
+                  "cr": false,
+                  "ref": "2e037369-8fde-4283-96a0-98381325a6a1",
+                  "httpRequestId": "2fa25e3f-6599-461c-b129-e48098f1c377",
+                  "scriptId": "8341984b-78b9-43bd-8120-6ba20de8ac8c",
+                  "execution": "f6f7eaf8-b2d6-440d-b68a-415ae0e82965"
+              }
+          }
+      ],
+      "error": null
+  }
+}
