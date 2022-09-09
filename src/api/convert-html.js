@@ -11,7 +11,6 @@ function generateHTMLReport(summary) {
       exec.item.setParent(collection);
     exec.request = exec.request ? new Request(exec.request) : undefined;
     exec.response = exec.response ? new Response(exec.response) : undefined;
-    exec.failure = Failure()
   });
 
   summary.collection = collection;

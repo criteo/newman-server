@@ -17,8 +17,11 @@ class Logger {
     this.logger.log({ level: LogLevel.warn, message });
   }
 
-  error(message, error) {
+  error(message, error, stacktrace) {
     this.logger.log({ level: LogLevel.error, message, error });
+    if(stacktrace){
+      this.logger.log({ level: LogLevel.error, stacktrace });
+    }
   }
 
   format(info) {
