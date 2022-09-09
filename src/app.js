@@ -138,7 +138,7 @@ class Application {
         if (!this.validateInput(req, res)) return;
 
         const summary = JSON.parse(req.files.summaryFile.data.toString());
-        const collectionName = summary.collection?.info?.name;
+        const collectionName = summary && summary.collection && summary.collection.info && summary.collection.info.name;
 
         logger.info(
           `Starting the conversion of JSON summary to HTML report for collection '${collectionName}'.`
