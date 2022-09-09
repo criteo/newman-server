@@ -19,7 +19,7 @@ class Logger {
 
   error(message, error, stacktrace) {
     this.logger.log({ level: LogLevel.error, message, error });
-    if(stacktrace){
+    if (stacktrace) {
       this.logger.log({ level: LogLevel.error, stacktrace });
     }
   }

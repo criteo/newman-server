@@ -110,7 +110,7 @@ class Application {
             `An error occured while running Postman collection '${collectionName}'.`,
             error
           );
-          res.status(500).send(`An error occured while running the collection '${collectionName}', using '${reporterType}' reporter.`);
+          res.status(500).send(`An error occured while running the collection`);
         }
       }
     );
@@ -151,10 +151,14 @@ class Application {
         } catch (error) {
           logger.error(
             `An error occured while converting JSON summary to HTML report.`,
-            error
+            error,
+            error?.stack
           );
-          logger.error(error?.stack);
-          res.status(500).send(`An error occured while converting JSON summary to HTML report for collection '${collectionName}.`);
+          res
+            .status(500)
+            .send(
+              `An error occured while converting JSON summary to HTML report`
+            );
         }
       }
     );
