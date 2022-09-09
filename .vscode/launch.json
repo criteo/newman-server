@@ -2,6 +2,18 @@
     "version": "0.2.0",
     "configurations": [
       {
+        "name": "Debug app",
+        "type": "node",
+        "request": "launch",
+        "runtimeArgs": [
+          "--inspect-brk",
+          "${workspaceRoot}/cli.js",
+          "--runInBand"
+        ],
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen"
+      },
+      {
         "name": "Debug Jest Tests",
         "type": "node",
         "request": "launch",

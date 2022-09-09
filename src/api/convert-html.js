@@ -6,10 +6,12 @@ function generateHTMLReport(summary) {
   collection.name = summary.collection.info.name;
 
   summary.run.executions.forEach((exec) => {
-    exec.item = new Item(exec.item);
-    exec.item.setParent(collection);
-    exec.request = new Request(exec.request);
-    exec.response = new Response(exec.response);
+    exec.item = exec.item ? new Item(exec.item) : undefined;
+    if(exec.item)
+      exec.item.setParent(collection);
+    exec.request = exec.request ? new Request(exec.request) : undefined;
+    exec.response = exec.response ? new Response(exec.response) : undefined;
+    exec.failure = Failure()
   });
 
   summary.collection = collection;
