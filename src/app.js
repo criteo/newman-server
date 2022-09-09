@@ -152,7 +152,7 @@ class Application {
           logger.error(
             `An error occured while converting JSON summary to HTML report.`,
             error,
-            error?.stack
+            error && error.stack
           );
           res
             .status(500)
