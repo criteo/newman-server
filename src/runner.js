@@ -4,22 +4,64 @@ const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const { toAbsolutePath } = require('./utils/path-utils');
 const { logger } = require('./utils/logger');
+const { createServer } = require('@stoplight/prism-http-server');
+const { getHttpOperationsFromSpec } = require('@stoplight/prism-cli/dist/operations');
+const { createLogger } = require('@stoplight/prism-core');
 
 class NewmanRunner {
   constructor(reportsFolder = './temp_reports') {
     this.reportsFolder = toAbsolutePath(reportsFolder);
   }
 
-  runCollection(res, type, collection, iterationData) {
+  async runCollection(res, type, collection, iterationData) {
+    let prismServer;
+    if(true){ //if prism is active
+      prismServer = await this.createPrismServer('https://something.crto.in','https://raw.githubusercontent.com/criteo/newman-server/main/public/openapi.yaml');
+      //inject prism proxy address in iterationData
+      console.log(prismServer.address);
+    }
+
     const reporter = this.reporterFromType(type);
     const runSettings = this.buildRunSetting(
       reporter,
       collection,
       iterationData
     );
-    newman.run(runSettings, (err, summary) =>
-      this.sendCollectionReport(reporter, res, err, summary, runSettings)
+    newman.run(runSettings, (err, summary) =>   {
+        this.sendCollectionReport(reporter, res, err, summary, runSettings);
+        if(prismServer){
+          console.log("closing :"+prismServer.address);
+          prismServer.close();
+        }
+          
+      }
     );
+  }
+
+  async createPrismServer(targetServiceUrl, targetOpenApiSpec) {
+    const operations = await getHttpOperationsFromSpec(targetOpenApiSpec);
+  
+    const server = createServer(operations, {
+      components: {
+        logger: createLogger('TestLogger'),
+      },
+      cors: true,
+      config: {
+        mock: false,
+        upstream: new URL(targetServiceUrl),
+        checkSecurity: boolean,
+        validateRequest: boolean,
+        validateResponse: boolean,
+        errors: false,
+        upstreamProxy: undefined //set proxy address here
+      },
+    });
+    const address = await server.listen(0);
+  
+    return {
+      address: address,
+      close: server.close.bind(server),
+    };
   }
 
   reporterFromType(type) {
