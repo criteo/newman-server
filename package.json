@@ -1,6 +1,6 @@
 {
   "name": "newman-server",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "A REST server for Newman",
   "repository": "github:criteo/newman-server",
   "main": "cli.js",
