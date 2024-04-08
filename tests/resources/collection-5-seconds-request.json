@@ -1,0 +1,30 @@
+{
+    "info": {
+        "_postman_id": "3525e6da-6f72-4ade-ad30-cbc68978b987",
+        "name": "Five seconds request",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "12610351"
+    },
+    "item": [
+        {
+            "name": "Untitled Request",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "https://postman-echo.com/delay/5",
+                    "protocol": "https",
+                    "host": [
+                        "postman-echo",
+                        "com"
+                    ],
+                    "path": [
+                        "delay",
+                        "5"
+                    ]
+                }
+            },
+            "response": []
+        }
+    ]
+}

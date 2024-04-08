@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: Newman-Server
   version: '1.0'
@@ -8,6 +8,13 @@ paths:
     post:
       operationId: runJson
       summary: Run a Postman collection and output the JSON result
+      parameters:
+        - name: timeout
+          in: query
+          description: Request timeout in ms. Optional
+          required: false
+          schema: 
+            type: number
       requestBody:
         required: true
         content:
@@ -31,6 +38,13 @@ paths:
     post:
       operationId: runHtml
       summary: Run a Postman collection and output the HTML result
+      parameters:
+        - name: timeout
+          in: query
+          description: Request timeout in ms. Optional.
+          required: false
+          schema: 
+            type: number
       requestBody:
         required: true
         content:
@@ -50,6 +64,13 @@ paths:
     post:
       operationId: runJUnit
       summary: Run a Postman collection and output the JUnit (XML) result
+      parameters:
+        - name: timeout
+          in: query
+          description: Request timeout in ms. Optional.
+          required: false
+          schema: 
+            type: number
       requestBody:
         required: true
         content:
@@ -169,7 +190,8 @@ components:
         collection: '{"info": {...}, ...}'
         iterationData: '[{key:"value"},{key:"value"}]'
     CollectionRunJsonOuputExample:
-      summaryFile: https://github.com/criteo/newman-server/blob/main/tests/resources/summary-valid.json 
+      value:
+        summaryFile: https://github.com/criteo/newman-server/blob/main/tests/resources/summary-valid.json 
 servers:
   - url: /
 externalDocs:

@@ -99,6 +99,16 @@ describe('Run endpoints', () => {
       });
   });
 
+  it('POST /run/json return 400 when timeout is set but not a number', async () => {
+    await requestWithSupertest
+      .post('/run/json?timeout=invalid')
+      .attach('collectionFile', CollectionFile.Standalone)
+      .expect(400)
+      .then((res) => {
+        expectErrorOnField(res, 'timeout', 'invalid');
+      });
+  });
+
   it('POST /run/json should return 500 if newman is unable to run the collection', async () => {
     await requestWithSupertest
       .post('/run/json')
@@ -160,6 +170,56 @@ describe('Run endpoints', () => {
           expect(err).toBeNull();
           expect(files.length).toEqual(0);
         });
+      });
+  });
+});
+
+describe('Run endpoints with timeout', () => {
+  it('POST /run/json for collection with 5s request return error in about 100ms if 100ms timeout is set', async () => {
+    const startTime = performance.now();
+
+    await requestWithSupertest
+      .post('/run/json?timeout=100')
+      .attach('collectionFile', CollectionFile.LongRequest)
+      .expect(500)
+      .then(() => {
+        expect(performance.now() - startTime).toBeLessThan(200); //less than ~100ms
+      });
+  });
+
+  it('POST /run/json for collection with 5s script return error in about 100ms  if 100ms timeout is set', async () => {
+    const startTime = performance.now();
+
+    await requestWithSupertest
+      .post('/run/json?timeout=100')
+      .attach('collectionFile', CollectionFile.LongScript)
+      .expect(500)
+      .then(() => {
+        expect(performance.now() - startTime).toBeLessThan(200); //less than ~100ms
+      });
+  });
+
+  it('POST /run/json for collection with 5s request return success if 10s timeout is set', async () => {
+    const startTime = performance.now();
+
+    await requestWithSupertest
+      .post('/run/json?timeout=10000')
+      .attach('collectionFile', CollectionFile.LongRequest)
+      .expect(200)
+      .then(() => {
+        expect(performance.now() - startTime).toBeLessThan(10000);
+      });
+  });
+
+  it('POST /run/json for collection with 5s script return success if 10s timeout is set', async () => {
+    const startTime = performance.now();
+
+    await requestWithSupertest
+      .post('/run/json?timeout=10000')
+      .attach('collectionFile', CollectionFile.LongScript)
+      .expect(200)
+      .then(() => {
+        expect(performance.now() - startTime).toBeLessThan(10000);
       });
   });
 });
@@ -241,6 +301,8 @@ const CollectionFile = {
   Standalone: './tests/resources/collection-standalone.json',
   ValidButNeedIterationData:
     './tests/resources/collection-valid-need-iteration-data.json',
+  LongRequest: './tests/resources/collection-5-seconds-request.json',
+  LongScript: './tests/resources/collection-5-seconds-request.json',
 };
 
 const IterationFile = {
