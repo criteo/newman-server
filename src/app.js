@@ -2,6 +2,7 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const {
   param,
+  query,
   validationResult,
   buildCheckFunction,
 } = require('express-validator');
@@ -76,6 +77,7 @@ class Application {
         .optional()
         .custom((file) => file.name && file.name.endsWith('.json'))
         .withMessage('The test iteration data must be a JSON file'),
+      query('timeout').optional().isInt(),
       (req, res) => {
         if (!this.validateInput(req, res)) return;
 
@@ -95,15 +97,21 @@ class Application {
           `Run for Postman collection '${collectionName}' started. Using '${reporterType}' reporter.`
         );
 
+        const timeout = req.query.timeout;
+        if (timeout) {
+          logger.info(`Timeout has been explicitly set: ${timeout}ms`);
+        }
+
         try {
           this.newmanRunner.runCollection(
             res,
             reporterType,
             collectionFileJSON,
-            iterationDataFileJSON
+            iterationDataFileJSON,
+            timeout
           );
           logger.info(
-            `Run for Postman collection '${collectionName}' ended succesfully.`
+            `Run for Postman collection '${collectionName}' started succesfully.`
           );
         } catch (error) {
           logger.error(

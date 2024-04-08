@@ -10,13 +10,19 @@ class NewmanRunner {
     this.reportsFolder = toAbsolutePath(reportsFolder);
   }
 
-  runCollection(res, type, collection, iterationData) {
+  runCollection(res, type, collection, iterationData, timeout) {
     const reporter = this.reporterFromType(type);
     const runSettings = this.buildRunSetting(
       reporter,
       collection,
-      iterationData
+      iterationData,
+      timeout
     );
+
+    if (timeout) {
+      runSettings.timeout = Number(timeout);
+    }
+
     newman.run(runSettings, (err, summary) =>
       this.sendCollectionReport(reporter, res, err, summary, runSettings)
     );
@@ -38,14 +44,12 @@ class NewmanRunner {
           iterationData: iterationData,
           reporters: 'htmlextra',
           reporter: { htmlextra: { export: uniqueHtmlFileName } },
-          timeout: 300000, //5 minutes
         };
       }
       case 'json':
         return {
           collection: collection,
           iterationData: iterationData,
-          timeout: 300000, //5 minutes
         };
       case 'junit': {
         const uniqueXmlFileName = path.join(
@@ -57,7 +61,6 @@ class NewmanRunner {
           iterationData: iterationData,
           reporters: 'junit',
           reporter: { junit: { export: uniqueXmlFileName } },
-          timeout: 300000, //5 minutes
         };
       }
       default:
@@ -70,6 +73,12 @@ class NewmanRunner {
   }
 
   sendCollectionReport(reporter, res, err, summary, runSettings) {
+    const collectionName =
+      runSettings &&
+      runSettings.collection &&
+      runSettings.collection.info &&
+      runSettings.collection.info.name;
+    logger.info(`Run for Postman collection '${collectionName}' ended.`);
     if (!this.handleError(err, res)) return;
 
     switch (reporter) {
