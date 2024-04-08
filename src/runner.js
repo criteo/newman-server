@@ -38,12 +38,14 @@ class NewmanRunner {
           iterationData: iterationData,
           reporters: 'htmlextra',
           reporter: { htmlextra: { export: uniqueHtmlFileName } },
+          timeout: 300000, //5 minutes
         };
       }
       case 'json':
         return {
           collection: collection,
           iterationData: iterationData,
+          timeout: 300000, //5 minutes
         };
       case 'junit': {
         const uniqueXmlFileName = path.join(
@@ -55,6 +57,7 @@ class NewmanRunner {
           iterationData: iterationData,
           reporters: 'junit',
           reporter: { junit: { export: uniqueXmlFileName } },
+          timeout: 300000, //5 minutes
         };
       }
       default:
