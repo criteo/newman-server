@@ -1,10 +1,10 @@
-![Node.js CI](https://github.com/criteo/newman-server/actions/workflows/node.js.yml/badge.svg)
+[![Node.js CI](https://github.com/criteo/newman-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/criteo/newman-server/actions/workflows/node.js.yml)
 
 # newman-server 
 
 `newman-server` is a simple NodeJS server that can run your Postman's collections, using the [newman](https://github.com/postmanlabs/newman) engine.
 
-🚩 Requires nodeJS >= 12 🚩
+🚩 Requires nodeJS >= 20 🚩
 
 **Example:**
 
