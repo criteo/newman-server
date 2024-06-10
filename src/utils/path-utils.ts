@@ -1,11 +1,9 @@
-const path = require('path');
+import * as path from 'node:path';
 
-function toAbsolutePath(relativePath) {
+export function toAbsolutePath(relativePath: string) {
   if (path.isAbsolute(relativePath)) {
     return relativePath;
   }
 
   return path.join(process.cwd(), relativePath);
 }
-
-module.exports = { toAbsolutePath };
