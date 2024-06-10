@@ -1,24 +1,31 @@
-const express = require('express');
-const fileUpload = require('express-fileupload');
-const {
+import type { Express, Request, Response } from 'express';
+import express from 'express';
+import fileUpload, { type UploadedFile } from 'express-fileupload';
+import healthCheck from 'express-healthcheck';
+import {
+  buildCheckFunction,
   param,
   query,
   validationResult,
-  buildCheckFunction,
-} = require('express-validator');
-//express-fileupload will populate res.files with the form's file, so we need a custom validator to access it
-const file = buildCheckFunction(['files']);
-const healthCheck = require('express-healthcheck');
-const swaggerUi = require('swagger-ui-express');
-const morgan = require('morgan');
-const path = require('path');
-const { runHealthChecks } = require('./api/health-checks');
-const { generateHTMLReport } = require('./api/convert-html');
-const { NewmanRunner } = require('./runner');
-const { logger, LogLevel } = require('./utils/logger');
+  type ValidationError,
+} from 'express-validator';
+import morgan from 'morgan';
+import * as path from 'node:path';
+import swaggerUi from 'swagger-ui-express';
+import { generateHTMLReport } from './api/convert-html';
+import { runHealthChecks } from './api/health-checks';
+import { NewmanRunner } from './runner';
+import { LogLevel, logger } from './utils/logger';
 
-class Application {
-  constructor(newmanRunner = new NewmanRunner()) {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error: express-fileupload will populate res.files with the form's file, so we need a custom validator to access it
+const file = buildCheckFunction(['files']);
+
+export class Application {
+  newmanRunner: NewmanRunner;
+  expressApp: Express;
+
+  constructor(newmanRunner: NewmanRunner = new NewmanRunner()) {
     this.newmanRunner = newmanRunner;
     this.expressApp = this.setupExpressApp();
   }
@@ -39,11 +46,11 @@ class Application {
           duration: tokens['response-time'](req, res),
           caller: remoteAddr,
         });
-      })
+      }),
     );
     expressApp.use(express.static(path.join(__dirname, '../public')));
     expressApp.use(fileUpload());
-    var options = {
+    const options = {
       swaggerOptions: {
         url: '/openapi.yaml',
       },
@@ -53,12 +60,12 @@ class Application {
       healthCheck({
         test: (callback) =>
           runHealthChecks(this.newmanRunner.reportsFolder, callback),
-      })
+      }),
     );
     expressApp.use(
       '/api/docs',
       swaggerUi.serve,
-      swaggerUi.setup(null, options)
+      swaggerUi.setup(undefined, options),
     );
     expressApp.use(express.json());
 
@@ -79,13 +86,17 @@ class Application {
         .withMessage('The test iteration data must be a JSON file'),
       query('timeout').optional().isInt(),
       (req, res) => {
-        if (!this.validateInput(req, res)) return;
+        if (!this.validateInput(req as Request, res)) return;
 
-        const collectionFileJSON = JSON.parse(
-          req.files.collectionFile.data.toString()
-        );
-        const iterationDataFileJSON = req.files.iterationDataFile
-          ? JSON.parse(req.files.iterationDataFile.data.toString())
+        const files = req.files!;
+        const collectionFile = files.collectionFile as UploadedFile;
+        const iterationDataFile = files.iterationDataFile as
+          | UploadedFile
+          | undefined;
+
+        const collectionFileJSON = JSON.parse(collectionFile.data.toString());
+        const iterationDataFileJSON = iterationDataFile
+          ? JSON.parse(iterationDataFile.data.toString())
           : null;
 
         const collectionName =
@@ -94,10 +105,10 @@ class Application {
           collectionFileJSON.info.name;
         const reporterType = req.params && req.params.type;
         logger.info(
-          `Run for Postman collection '${collectionName}' started. Using '${reporterType}' reporter.`
+          `Run for Postman collection '${collectionName}' started. Using '${reporterType}' reporter.`,
         );
 
-        const timeout = req.query.timeout;
+        const timeout = req.query?.timeout;
         if (timeout) {
           logger.info(`Timeout has been explicitly set: ${timeout}ms`);
         }
@@ -108,19 +119,19 @@ class Application {
             reporterType,
             collectionFileJSON,
             iterationDataFileJSON,
-            timeout
+            timeout,
           );
           logger.info(
-            `Run for Postman collection '${collectionName}' started succesfully.`
+            `Run for Postman collection '${collectionName}' started succesfully.`,
           );
         } catch (error) {
           logger.error(
             `An error occured while running Postman collection '${collectionName}'.`,
-            error
+            error as Error,
           );
           res.status(500).send(`An error occured while running the collection`);
         }
-      }
+      },
     );
 
     expressApp.post(
@@ -140,12 +151,15 @@ class Application {
           );
         })
         .withMessage(
-          'The test summary file is not valid. Please use the summary generated using Newman.'
+          'The test summary file is not valid. Please use the summary generated using Newman.',
         ),
       (req, res) => {
-        if (!this.validateInput(req, res)) return;
+        if (!this.validateInput(req as Request, res)) return;
 
-        const summary = JSON.parse(req.files.summaryFile.data.toString());
+        const files = req.files!;
+        const summaryFile = files.summaryFile as UploadedFile;
+
+        const summary = JSON.parse(summaryFile.data.toString());
         const collectionName =
           summary &&
           summary.collection &&
@@ -153,36 +167,37 @@ class Application {
           summary.collection.info.name;
 
         logger.info(
-          `Starting the conversion of JSON summary to HTML report for collection '${collectionName}'.`
+          `Starting the conversion of JSON summary to HTML report for collection '${collectionName}'.`,
         );
 
         try {
-          var htmlReport = generateHTMLReport(summary);
+          const htmlReport = generateHTMLReport(summary);
           res.set('Content-Type', 'text/html');
           res.send(Buffer.from(htmlReport));
         } catch (error) {
+          const error_ = error as Error;
           logger.error(
             `An error occured while converting JSON summary to HTML report.`,
-            error,
-            error && error.stack
+            error_,
+            error_ && error_.stack,
           );
           res
             .status(500)
             .send(
-              `An error occured while converting JSON summary to HTML report`
+              `An error occured while converting JSON summary to HTML report`,
             );
         }
-      }
+      },
     );
 
     return expressApp;
   }
 
-  validateInput(req, res) {
+  validateInput(req: Request, res: Response) {
     const validationResults = validationResult(req);
     if (validationResults.isEmpty()) return true;
 
-    var errors = validationResults
+    const errors = validationResults
       .array()
       .map((result) => this.keepFileNameAsValue(result));
     res.status(400).json({ errors: errors });
@@ -190,7 +205,9 @@ class Application {
     return false;
   }
 
-  keepFileNameAsValue(result) {
+  keepFileNameAsValue(result: ValidationError) {
+    if (!('value' in result)) return result;
+
     if (typeof result.value != 'object' || result.value.name === 'undefined')
       return result;
 
@@ -198,5 +215,3 @@ class Application {
     return result;
   }
 }
-
-module.exports = { Application };

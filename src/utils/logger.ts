@@ -1,30 +1,36 @@
-const winston = require('winston');
+import * as winston from 'winston';
+
+export const LogLevel = {
+  debug: 'debug',
+  info: 'info',
+  warn: 'warn',
+  error: 'error',
+} as const;
 
 class Logger {
+  logger: winston.Logger;
+
   constructor() {
     this.logger = setUpWinston(this.format);
   }
 
-  debug(message) {
+  debug(message: string) {
     this.logger.log({ level: LogLevel.debug, message });
   }
 
-  info(message) {
+  info(message: string) {
     this.logger.log({ level: LogLevel.info, message });
   }
 
-  warn(message) {
+  warn(message: string) {
     this.logger.log({ level: LogLevel.warn, message });
   }
 
-  error(message, error, stacktrace) {
-    this.logger.log({ level: LogLevel.error, message, error });
-    if (stacktrace) {
-      this.logger.log({ level: LogLevel.error, stacktrace });
-    }
+  error(message: string, error: Error, stacktrace?: unknown) {
+    this.logger.log({ level: LogLevel.error, message, error, stacktrace });
   }
 
-  format(info) {
+  format(info: winston.Logform.TransformableInfo) {
     const date = new Date();
 
     let log = `level=${info.level} ts=${date.toISOString()} msg="${
@@ -44,7 +50,11 @@ class Logger {
   }
 }
 
-function setUpWinston(formatter) {
+export const logger = new Logger();
+
+function setUpWinston(
+  formatter: (info: winston.Logform.TransformableInfo) => string,
+) {
   const printedFormat = winston.format.printf((info) => formatter(info));
   return winston.createLogger({
     level: LogLevel.info,
@@ -52,18 +62,9 @@ function setUpWinston(formatter) {
       new winston.transports.Console({
         format: winston.format.combine(
           winston.format.timestamp(),
-          printedFormat
+          printedFormat,
         ),
       }),
     ],
   });
 }
-
-const LogLevel = {
-  debug: 'debug',
-  info: 'info',
-  warn: 'warn',
-  error: 'error',
-};
-
-module.exports = { logger: new Logger(), LogLevel };

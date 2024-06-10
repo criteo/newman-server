@@ -1,22 +1,32 @@
-const newman = require('newman');
-const path = require('path');
-const { v4: uuidv4 } = require('uuid');
-const fs = require('fs');
-const { toAbsolutePath } = require('./utils/path-utils');
-const { logger } = require('./utils/logger');
+import type { Response } from 'express';
+import type { NewmanRunOptions, NewmanRunSummary } from 'newman';
+import * as newman from 'newman';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import type { CollectionDefinition } from 'postman-collection';
+import { v4 as uuidv4 } from 'uuid';
+import { logger } from './utils/logger';
+import { toAbsolutePath } from './utils/path-utils';
 
-class NewmanRunner {
-  constructor(reportsFolder = './temp_reports') {
+export class NewmanRunner {
+  reportsFolder: string;
+
+  constructor(reportsFolder: string = './temp_reports') {
     this.reportsFolder = toAbsolutePath(reportsFolder);
   }
 
-  runCollection(res, type, collection, iterationData, timeout) {
+  runCollection(
+    res: Response,
+    type: string,
+    collection: CollectionDefinition,
+    iterationData: NewmanRunOptions['iterationData'],
+    timeout: string,
+  ) {
     const reporter = this.reporterFromType(type);
     const runSettings = this.buildRunSetting(
       reporter,
       collection,
       iterationData,
-      timeout
     );
 
     if (timeout) {
@@ -24,20 +34,24 @@ class NewmanRunner {
     }
 
     newman.run(runSettings, (err, summary) =>
-      this.sendCollectionReport(reporter, res, err, summary, runSettings)
+      this.sendCollectionReport(reporter, res, err, summary, runSettings),
     );
   }
 
-  reporterFromType(type) {
+  reporterFromType(type: string) {
     return type == 'html' ? 'htmlextra' : type;
   }
 
-  buildRunSetting(reporter, collection, iterationData) {
+  buildRunSetting(
+    reporter: string,
+    collection: CollectionDefinition,
+    iterationData: NewmanRunOptions['iterationData'],
+  ): NewmanRunOptions {
     switch (reporter) {
       case 'htmlextra': {
         const uniqueHtmlFileName = path.join(
           this.reportsFolder,
-          '/htmlResults' + uuidv4() + '.html'
+          '/htmlResults' + uuidv4() + '.html',
         );
         return {
           collection: collection,
@@ -54,7 +68,7 @@ class NewmanRunner {
       case 'junit': {
         const uniqueXmlFileName = path.join(
           this.reportsFolder,
-          'htmlResults' + uuidv4() + '.xml'
+          'htmlResults' + uuidv4() + '.xml',
         );
         return {
           collection: collection,
@@ -72,20 +86,29 @@ class NewmanRunner {
     }
   }
 
-  sendCollectionReport(reporter, res, err, summary, runSettings) {
-    const collectionName =
-      runSettings &&
-      runSettings.collection &&
-      runSettings.collection.info &&
-      runSettings.collection.info.name;
+  sendCollectionReport(
+    reporter: string,
+    res: Response,
+    err: Error | null,
+    summary: NewmanRunSummary,
+    runSettings: NewmanRunOptions,
+  ) {
+    let collectionName;
+    if (
+      typeof runSettings.collection !== 'string' &&
+      'info' in runSettings.collection
+    ) {
+      collectionName = runSettings.collection.info?.name;
+    }
     logger.info(`Run for Postman collection '${collectionName}' ended.`);
+
     if (!this.handleError(err, res)) return;
 
     switch (reporter) {
       case 'htmlextra':
       case 'junit': {
-        const uniqueFileNamePath = '' + runSettings.reporter[reporter].export;
-        var options = {};
+        const uniqueFileNamePath = '' + runSettings.reporter![reporter].export;
+        let options = {};
         if (!path.isAbsolute(uniqueFileNamePath)) {
           options = {
             root: path.join('.'),
@@ -127,7 +150,7 @@ class NewmanRunner {
     }
   }
 
-  handleError(err, res) {
+  handleError(err: Error | null, res: Response) {
     if (err) {
       console.error(err);
       res.status(500);
@@ -137,5 +160,3 @@ class NewmanRunner {
     return true;
   }
 }
-
-module.exports = { NewmanRunner };

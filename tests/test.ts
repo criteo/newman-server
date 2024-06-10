@@ -1,7 +1,9 @@
-const { Application } = require('../src/app');
-const supertest = require('supertest');
-const fs = require('fs');
-const { NewmanRunner } = require('../src/runner');
+import * as fs from 'node:fs';
+import type { Response } from 'supertest';
+import supertest from 'supertest';
+import { Application } from '../src/app';
+import { NewmanRunner } from '../src/runner';
+
 const app = new Application(new NewmanRunner());
 const requestWithSupertest = supertest(app.expressApp);
 
@@ -21,7 +23,7 @@ describe('Run endpoints', () => {
       .post('/run/json')
       .expect(400)
       .then((res) => {
-        expectErrorOnField(res, 'collectionFile');
+        expectErrorOnField(res, 'collectionFile', undefined);
       });
   });
 
@@ -34,7 +36,7 @@ describe('Run endpoints', () => {
         expectErrorOnField(
           res,
           'collectionFile',
-          'collection-invalid-type.txt'
+          'collection-invalid-type.txt',
         );
       });
   });
@@ -49,7 +51,7 @@ describe('Run endpoints', () => {
         expectErrorOnField(
           res,
           'iterationDataFile',
-          'iteration-invalid-type.txt'
+          'iteration-invalid-type.txt',
         );
       });
   });
@@ -288,11 +290,11 @@ describe('Convert HTML', () => {
   });
 });
 
-function expectErrorOnField(res, field, value) {
+function expectErrorOnField<T>(res: Response, field: string, value: T) {
   expect(res.type).toEqual(expect.stringContaining('json'));
   expect(res.body).toHaveProperty('errors');
   expect(res.body.errors.length).toEqual(1);
-  expect(res.body.errors[0].param).toEqual(field);
+  expect(res.body.errors[0].path).toEqual(field);
   expect(res.body.errors[0].value).toEqual(value);
 }
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-const yargs = require('yargs');
-const { hideBin } = require('yargs/helpers');
-const { NewmanRunner } = require('./src/runner');
-const { Application } = require('./src/app');
-const { logger } = require('./src/utils/logger');
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
+import { Application } from './app';
+import { NewmanRunner } from './runner';
+import { logger } from './utils/logger';
 
 yargs(hideBin(process.argv))
   .scriptName('newman-server')
@@ -29,9 +29,9 @@ yargs(hideBin(process.argv))
   })
   .parse();
 
-function serve(port, tempReportsFolder) {
-  var runner = new NewmanRunner(tempReportsFolder);
-  var app = new Application(runner);
+function serve(port: number, tempReportsFolder: string) {
+  const runner = new NewmanRunner(tempReportsFolder);
+  const app = new Application(runner);
   app.expressApp.listen(port, () => {
     logger.info(`Server started on port ${port}`);
     logger.info(`Access http://localhost:${port} to test the server`);
