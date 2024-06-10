@@ -19,6 +19,7 @@ export class NewmanRunner {
     res: Response,
     type: string,
     collection: CollectionDefinition,
+    environment: NewmanRunOptions['environment'],
     iterationData: NewmanRunOptions['iterationData'],
     timeout: string,
   ) {
@@ -26,6 +27,7 @@ export class NewmanRunner {
     const runSettings = this.buildRunSetting(
       reporter,
       collection,
+      environment,
       iterationData,
     );
 
@@ -45,6 +47,7 @@ export class NewmanRunner {
   buildRunSetting(
     reporter: string,
     collection: CollectionDefinition,
+    environment: NewmanRunOptions['environment'],
     iterationData: NewmanRunOptions['iterationData'],
   ): NewmanRunOptions {
     switch (reporter) {
@@ -54,16 +57,18 @@ export class NewmanRunner {
           '/htmlResults' + uuidv4() + '.html',
         );
         return {
-          collection: collection,
-          iterationData: iterationData,
+          collection,
+          environment,
+          iterationData,
           reporters: 'htmlextra',
           reporter: { htmlextra: { export: uniqueHtmlFileName } },
         };
       }
       case 'json':
         return {
-          collection: collection,
-          iterationData: iterationData,
+          collection,
+          environment,
+          iterationData,
         };
       case 'junit': {
         const uniqueXmlFileName = path.join(
@@ -71,8 +76,9 @@ export class NewmanRunner {
           'htmlResults' + uuidv4() + '.xml',
         );
         return {
-          collection: collection,
-          iterationData: iterationData,
+          collection,
+          environment,
+          iterationData,
           reporters: 'junit',
           reporter: { junit: { export: uniqueXmlFileName } },
         };

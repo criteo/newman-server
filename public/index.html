@@ -16,7 +16,7 @@
 <body>
     <div class="content">
         <h2 style="text-align: center;">🧪newman-server🧪</h2>
-        
+
         <div class="alert alert-info alert-dismissible fade show" style="text-align: justify">
             <strong>ℹ️ About</strong> <br>
             Newman-server allows you to run a Postman collection (using the newman engine) and output the result in either JSON, JUnit or HTML format.<br>
@@ -30,16 +30,25 @@
                 <label for="formFile" class="form-label"><strong>Postman collection file</strong></label>
                 <input class="form-control" type="file" name="collectionFile" accept=".json" required>
                 <div class="form-text">
-                    Once you've built your collection in Postman, you can <a href="https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#exporting-postman-data">export</a> it as a JSON file. 
+                    Once you've built your collection in Postman, you can <a href="https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#exporting-postman-data">export</a> it as a JSON file.
                     This is the file that will be runnable by newman and newman-server.
                 </div>
             </div>
-            
+
             <div class="mb-3">
-                <label for="formFile" class="form-label"><strong>Optional iteration data file</strong></label>
+                <label for="formFile" class="form-label"><strong>Environment file (optional)</strong></label>
+                <input class="form-control" type="file" name="environmentFile" accept=".json">
+                <div class="form-text">
+                    An <a href="https://learning.postman.com/docs/sending-requests/variables/managing-environments">environment</a> JSON file
+                    is a set of one or more variables that you can reference when sending requests, writing pre-request scripts, or writing post-response scripts.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="formFile" class="form-label"><strong>Iteration data file (optional)</strong></label>
                 <input class="form-control" type="file" name="iterationDataFile" accept=".json">
                 <div class="form-text">
-                    The <a href="https://learning.postman.com/docs/running-collections/working-with-data-files/">data file</a> is an optional JSON file 
+                    The <a href="https://learning.postman.com/docs/running-collections/working-with-data-files/">data file</a> is an optional JSON file
                     used to define the value of your collection's variables for different iterations.
                 </div>
             </div>

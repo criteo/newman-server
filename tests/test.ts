@@ -224,6 +224,43 @@ describe('Run endpoints with timeout', () => {
         expect(performance.now() - startTime).toBeLessThan(10000);
       });
   });
+
+  it('POST /run/json should return 400 when provided environment is not a JSON string', async () => {
+    await requestWithSupertest
+      .post('/run/json')
+      .attach('collectionFile', CollectionFile.ValidButNeedEnvironment)
+      .attach('environmentFile', EnvironmentFile.InvalidType)
+      .expect(400)
+      .then((res) => {
+        expectErrorOnField(
+          res,
+          'environmentFile',
+          'environment-invalid-type.txt',
+        );
+      });
+  });
+
+  it('POST /run/json should return results when the collection and environment is provided', async () => {
+    await requestWithSupertest
+      .post('/run/json')
+      .attach('collectionFile', CollectionFile.ValidButNeedEnvironment)
+      .attach('environmentFile', EnvironmentFile.Valid)
+      .expect(200)
+      .then((res) => {
+        expect(res.type).toEqual(expect.stringContaining('json'));
+
+        const buf = Buffer.from(
+          res.body.run.executions[0].response.stream.data,
+        );
+        const json = JSON.parse(buf.toString());
+
+        expect(json.url).toEqual(
+          'http://postman-echo.com/get?foobar=some_value',
+        );
+        expect(json.args.foobar).toEqual('some_value');
+        expect(json.args.barfoo).toEqual('value_some');
+      });
+  });
 });
 
 describe('OpenApi documentation', () => {
@@ -301,10 +338,17 @@ function expectErrorOnField<T>(res: Response, field: string, value: T) {
 const CollectionFile = {
   InvalidType: './tests/resources/collection-invalid-type.txt',
   Standalone: './tests/resources/collection-standalone.json',
+  ValidButNeedEnvironment:
+    './tests/resources/collection-valid-need-environment.json',
   ValidButNeedIterationData:
     './tests/resources/collection-valid-need-iteration-data.json',
   LongRequest: './tests/resources/collection-5-seconds-request.json',
   LongScript: './tests/resources/collection-5-seconds-request.json',
+};
+
+const EnvironmentFile = {
+  InvalidType: './tests/resources/environment-invalid-type.txt',
+  Valid: './tests/resources/environment-valid.json',
 };
 
 const IterationFile = {

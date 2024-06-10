@@ -1,0 +1,27 @@
+{
+	"id": "cdbf7ba9-afb7-4295-90c9-64bdad23afcf",
+	"name": "Test Environment",
+	"values": [
+		{
+			"key": "foobar",
+			"value": "some_value",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "barfoo",
+			"value": "value_some",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "application_url",
+			"value": "https://postman-echo.com/get",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2024-06-10T13:03:19.689Z",
+	"_postman_exported_using": "Postman/11.1.28-240604-0452"
+}
