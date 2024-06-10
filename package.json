@@ -1,6 +1,6 @@
 {
   "name": "newman-server",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "A REST server for Newman",
   "keywords": [
     "newman"
