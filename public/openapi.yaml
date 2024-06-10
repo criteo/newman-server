@@ -13,7 +13,7 @@ paths:
           in: query
           description: Request timeout in ms. Optional
           required: false
-          schema: 
+          schema:
             type: number
       requestBody:
         required: true
@@ -43,7 +43,7 @@ paths:
           in: query
           description: Request timeout in ms. Optional.
           required: false
-          schema: 
+          schema:
             type: number
       requestBody:
         required: true
@@ -69,7 +69,7 @@ paths:
           in: query
           description: Request timeout in ms. Optional.
           required: false
-          schema: 
+          schema:
             type: number
       requestBody:
         required: true
@@ -88,7 +88,7 @@ paths:
               examples:
                 xml:
                   value: |
-                    <testsuites name="Newman" tests="1" time="0.293"> 
+                    <testsuites name="Newman" tests="1" time="0.293">
                       <testsuite name="Github repository self-check" id="..." timestamp="..." tests="3" failures="0" errors="0" time="0.293">
                           <testcase name="Status code is 200" time="0.293" classname="Newman"/>
                           <testcase name="The repository ful name is criteo/newman-server" time="0.293" classname="Newman"/>
@@ -153,12 +153,12 @@ paths:
                   value: |
                     {
                       "errors": "The summary file is not of valid format. Please use the summary generated using Newman."
-                    }        
+                    }
 components:
   schemas:
     CollectionRunInput:
       type: object
-      description: The Postman collection file and optional iteration data file to run
+      description: The Postman collection file and optional environment and iteration data files to run
       required:
         - collectionFile
       properties:
@@ -166,6 +166,14 @@ components:
           type: string
           format: binary
           description: the JSON Postman collection file
+        environmentFile:
+          type: string
+          format: binary
+          description: the JSON environment file.
+          externalDocs:
+            description: more information about the environment file
+            url: >-
+              https://learning.postman.com/docs/sending-requests/variables/managing-environments/
         iterationDataFile:
           type: string
           format: binary
@@ -191,7 +199,7 @@ components:
         iterationData: '[{key:"value"},{key:"value"}]'
     CollectionRunJsonOuputExample:
       value:
-        summaryFile: https://github.com/criteo/newman-server/blob/main/tests/resources/summary-valid.json 
+        summaryFile: https://github.com/criteo/newman-server/blob/main/tests/resources/summary-valid.json
 servers:
   - url: /
 externalDocs:

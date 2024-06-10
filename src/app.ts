@@ -80,6 +80,10 @@ export class Application {
         .withMessage('The test collection file is mandatory')
         .custom((file) => file.name && file.name.endsWith('.json'))
         .withMessage('The test collection file must be a JSON file'),
+      file('environmentFile')
+        .optional()
+        .custom((file) => file.name && file.name.endsWith('.json'))
+        .withMessage('The test environment must be a JSON file'),
       file('iterationDataFile')
         .optional()
         .custom((file) => file.name && file.name.endsWith('.json'))
@@ -90,11 +94,17 @@ export class Application {
 
         const files = req.files!;
         const collectionFile = files.collectionFile as UploadedFile;
+        const environmentFile = files.environmentFile as
+          | UploadedFile
+          | undefined;
         const iterationDataFile = files.iterationDataFile as
           | UploadedFile
           | undefined;
 
         const collectionFileJSON = JSON.parse(collectionFile.data.toString());
+        const environmentFileJSON = environmentFile
+          ? JSON.parse(environmentFile.data.toString())
+          : null;
         const iterationDataFileJSON = iterationDataFile
           ? JSON.parse(iterationDataFile.data.toString())
           : null;
@@ -118,6 +128,7 @@ export class Application {
             res,
             reporterType,
             collectionFileJSON,
+            environmentFileJSON,
             iterationDataFileJSON,
             timeout,
           );
