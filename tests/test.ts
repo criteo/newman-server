@@ -255,7 +255,7 @@ describe('Run endpoints with timeout', () => {
         const json = JSON.parse(buf.toString());
 
         expect(json.url).toEqual(
-          'http://postman-echo.com/get?foobar=some_value',
+          'https://postman-echo.com/get?foobar=some_value',
         );
         expect(json.args.foobar).toEqual('some_value');
         expect(json.args.barfoo).toEqual('value_some');
