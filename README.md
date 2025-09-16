@@ -9,7 +9,7 @@
 **Example:**
 
 ```sh
-$ npm install -g newman-server
+$ npm install -g @criteo/newman-server
 $ newman-server
 Server started on port 8080
 Access http://localhost:8080 to test the server
@@ -18,7 +18,7 @@ Access http://localhost:8080 to test the server
 If you don't want to do a global installation, you can use npx to run a locally installed dependency
 
 ```sh
-$ npx newman-server
+$ npx @criteo/newman-server
 ```
 
 The server expose a simple **POST /run/{outputType}** endpoint that expect the Postman collection as a form data input. For example POST /run/json for will use the json newman reporter.
@@ -78,6 +78,6 @@ $ npm run dev
 
 ```sh
 $ npm pack
-$ npm install -g newman-server-x.x.x.tgz
+$ npm install -g criteo-newman-server-x.x.x.tgz
 $ newman-server
 ```
