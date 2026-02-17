@@ -35,9 +35,13 @@ export class NewmanRunner {
       runSettings.timeout = Number(timeout);
     }
 
-    newman.run(runSettings, (err, summary) =>
-      this.sendCollectionReport(reporter, res, err, summary, runSettings),
-    );
+    try {
+      newman.run(runSettings, (err, summary) =>
+        this.sendCollectionReport(reporter, res, err, summary, runSettings),
+      );
+    } catch (error) {
+      this.handleError(error, res);
+    }
   }
 
   reporterFromType(type: string) {
@@ -156,7 +160,7 @@ export class NewmanRunner {
     }
   }
 
-  handleError(err: Error | null, res: Response) {
+  handleError(err: unknown, res: Response) {
     if (err) {
       console.error(err);
       res.status(500);
