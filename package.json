@@ -1,6 +1,6 @@
 {
   "name": "@criteo/newman-server",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "A REST server for Newman",
   "keywords": [
     "newman"
